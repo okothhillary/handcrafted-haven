@@ -13,7 +13,7 @@
 ## Tech Stack
 
 - **Front-End:** HTML, CSS, JavaScript, Next.js  
-- **Back-End:** Node.js, Database (e.g., MongoDB or PostgreSQL)  
+- **Back-End:** Node.js, Database  
 - **Deployment:** Vercel  
 - **Project Management:** GitHub Projects  
 - **Version Control:** Git and GitHub
