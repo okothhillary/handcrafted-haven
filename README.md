@@ -1,6 +1,6 @@
 # Handcrafted Haven
 
-**Handcrafted Haven** is an innovative web application that provides a platform for artisans and crafters to showcase and sell their unique handcrafted items. It serves as a virtual marketplace where creativity meets commerce, empowering creators to connect with customers who value originality, craftsmanship, and quality.
+**Handcrafted Haven** is aweb application that provides a platform for artisans and crafters to showcase and sell their unique handcrafted items. It serves as a virtual marketplace where creativity meets commerce, empowering creators to connect with customers who value craftsmanship.
 
 ## Features
 
@@ -13,7 +13,7 @@
 ## Tech Stack
 
 - **Front-End:** HTML, CSS, JavaScript, Next.js  
-- **Back-End:** Node.js, Database  
+- **Back-End:** Node.js, MongoDB  
 - **Deployment:** Vercel  
 - **Project Management:** GitHub Projects  
 - **Version Control:** Git and GitHub
