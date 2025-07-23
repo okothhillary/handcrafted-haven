@@ -2,10 +2,10 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Team Members:
 
-# George Olwal
-# Hillary Okoth
-# Emmanuel Ekenedo
-# Malcolm Nigel
+- George Olwal
+- Hillary Okoth
+- Emmanuel Ekenedo
+- Malcolm Nigel
 
 ## Getting Started
 
