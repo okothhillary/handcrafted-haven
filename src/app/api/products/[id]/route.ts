@@ -1,72 +1,68 @@
 import { connectDB } from "@/utils/connectDB";
 import { Product } from "@/models/product";
-import { NextResponse } from "next/server";
-import { Types } from "mongoose";
+import { NextRequest, NextResponse } from "next/server";
 
-// GET /api/products/[id]
-export async function GET(_: Request, { params }: { params: { id: string } }) {
-  await connectDB();
+/* Helper function to extract params safely. We wait for the params to resolve before destructuring otherwise 
+nextjs keeps giving a warning of us not awaiting the params before using it(code will still work with the warning though)*/
 
-  if (!Types.ObjectId.isValid(params.id)) {
-    return NextResponse.json(
-      { message: "Invalid Product ID" },
-      { status: 400 }
-    );
-  }
-
-  const product = await Product.findById(params.id);
-  if (!product) {
-    return NextResponse.json({ message: "Product not found" }, { status: 404 });
-  }
-
-  return NextResponse.json(product);
+async function getParams(params: Promise<{ id: string }>) {
+  return params;
 }
 
-// PUT /api/products/[id]
+export async function GET(
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
+  const { id } = await getParams(context.params);
+
+  try {
+    await connectDB();
+    const product = await Product.findById(id);
+    if (!product) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+    return NextResponse.json(product);
+  } catch {
+    return NextResponse.json(
+      { error: "Failed to get product" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
-  await connectDB();
+  const { id } = await getParams(context.params);
 
-  if (!Types.ObjectId.isValid(params.id)) {
-    return NextResponse.json(
-      { message: "Invalid Product ID" },
-      { status: 400 }
-    );
+  try {
+    await connectDB();
+    const data = await req.json();
+    const updated = await Product.findByIdAndUpdate(id, data, { new: true });
+    if (!updated) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+    return NextResponse.json(updated);
+  } catch {
+    return NextResponse.json({ error: "Failed to update" }, { status: 500 });
   }
-
-  const data = await req.json();
-  const updated = await Product.findByIdAndUpdate(params.id, data, {
-    new: true,
-  });
-
-  if (!updated) {
-    return NextResponse.json({ message: "Product not found" }, { status: 404 });
-  }
-
-  return NextResponse.json(updated);
 }
 
-// DELETE /api/products/[id]
 export async function DELETE(
-  _: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  context: { params: Promise<{ id: string }> }
 ) {
-  await connectDB();
+  const { id } = await getParams(context.params);
 
-  if (!Types.ObjectId.isValid(params.id)) {
-    return NextResponse.json(
-      { message: "Invalid Product ID" },
-      { status: 400 }
-    );
+  try {
+    await connectDB();
+    const deleted = await Product.findByIdAndDelete(id);
+    if (!deleted) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+    return NextResponse.json({ message: "Product deleted" });
+  } catch {
+    return NextResponse.json({ error: "Failed to delete" }, { status: 500 });
   }
-
-  const deleted = await Product.findByIdAndDelete(params.id);
-
-  if (!deleted) {
-    return NextResponse.json({ message: "Product not found" }, { status: 404 });
-  }
-
-  return NextResponse.json({ message: "Product deleted successfully" });
 }
