@@ -1,0 +1,17 @@
+[
+  {
+    "userId": "68810b23f4937423b6320df9",
+    "products": [
+      {
+        "productId": "68811234f4937423b6320aaa",
+        "quantity": 2
+      },
+      {
+        "productId": "68815678f4937423b6320bbb",
+        "quantity": 1
+      }
+    ],
+    "total": 36500,
+    "status": "processing"
+  }
+]

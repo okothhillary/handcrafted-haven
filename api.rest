@@ -1,0 +1,115 @@
+@host = http://localhost:3000
+
+### Create a New User
+POST {{host}}/api/users
+Content-Type: application/json
+
+{
+  "name": "George Olwal",
+  "email": "george@example.com",
+  "password": "securepassword"
+}
+
+### Get All Users
+GET {{host}}/api/users
+
+### Get Single User by ID
+GET {{host}}/api/users/68810b23f4937423b6320df9
+
+---
+
+### Create a New Product
+POST {{host}}/api/products
+Content-Type: application/json
+
+{
+  "name": "Handmade Wooden Bowl",
+  "price": 1800,
+  "description": "Locally crafted from mahogany",
+  "image": "/images/wooden-bowl.jpg",
+  "category": "Kitchenware",
+  "stock": 50
+}
+
+### Get All Products
+GET {{host}}/api/products
+
+### Get Product by ID
+GET {{host}}/api/products/64ee91b0a5a1234b9c789ef0
+
+### Update Product by ID
+PUT {{host}}/api/products/64ee91b0a5a1234b9c789ef0
+Content-Type: application/json
+
+{
+  "name": "Updated Handmade Wooden Bowl",
+  "price": 2000,
+  "stock": 100
+}
+
+### Delete Product by ID
+DELETE {{host}}/api/products/64ee91b0a5a1234b9c789ef0
+
+---
+
+### Add Items to Cart
+POST {{host}}/api/cart
+Content-Type: application/json
+
+{
+  "userId": "68810b23f4937423b6320df9",
+  "items": [
+    {
+      "productId": "64ee91b0a5a1234b9c789ef0",
+      "quantity": 2
+    }
+  ]
+}
+
+### Get User Cart
+GET {{host}}/api/cart/68810b23f4937423b6320df9
+
+### Update User Cart
+PUT {{host}}/api/cart/68810b23f4937423b6320df9
+Content-Type: application/json
+
+{
+  "items": [
+    {
+      "productId": "64ee91b0a5a1234b9c789ef0",
+      "quantity": 5
+    }
+  ]
+}
+
+### Delete User Cart
+DELETE {{host}}/api/cart/68810b23f4937423b6320df9
+
+---
+
+### Create Order
+POST {{host}}/api/orders
+Content-Type: application/json
+
+{
+  "userId": "68810b23f4937423b6320df9",
+  "products": [
+    {
+      "productId": "64ee91b0a5a1234b9c789ef0",
+      "quantity": 2
+    }
+  ],
+  "total": 3600
+}
+
+### Get All Orders
+GET {{host}}/api/orders
+
+### Get Orders by User ID
+GET {{host}}/api/orders/user/68810b23f4937423b6320df9
+
+### Get Single Order by ID
+GET {{host}}/api/orders/ORDER_ID_HERE
+
+### Delete an Order
+DELETE {{host}}/api/orders/ORDER_ID_HERE
