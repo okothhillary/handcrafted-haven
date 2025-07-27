@@ -1,5 +1,6 @@
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -31,31 +32,40 @@ export default function Home() {
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">🚀 Development Progress</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
-              <h3 className="font-medium text-amber-600">✅ Phase 1: Frontend Project Initialization</h3>
+              <h3 className="font-medium text-amber-600">✅ Phase 2: Core Layout & Components</h3>
               <ul className="text-sm text-gray-600 space-y-1 ml-4">
-                <li>• Next.js 15.4.1 with TypeScript</li>
-                <li>• Tailwind CSS with custom design tokens</li>
-                <li>• Google Fonts integration (Pacifico, Geist)</li>
-                <li>• ESLint and development environment</li>
+                <li>• ✅ Navigation system with mobile menu</li>
+                <li>• ✅ Layout components and error boundaries</li>
+                <li>• ✅ Form fields with validation system</li>
+                <li>• ✅ Modal and dropdown components</li>
               </ul>
             </div>
             <div className="space-y-3">
-              <h3 className="font-medium text-amber-600">⏳ Phase 2: Core Layout & Navigation</h3>
+              <h3 className="font-medium text-amber-600">⏳ Phase 3: Homepage Implementation</h3>
               <ul className="text-sm text-gray-600 space-y-1 ml-4">
-                <li>• ✅ Header component with responsive navigation</li>
-                <li>• ✅ Footer component with brand links</li>
-                <li>• ✅ UI components (Button, Card)</li>
-                <li>• ⏳ Layout wrapper and error boundaries</li>
+                <li>• Hero section with brand messaging</li>
+                <li>• Featured products integration</li>
+                <li>• Category showcase with navigation</li>
+                <li>• Testimonials and social proof</li>
               </ul>
             </div>
           </div>
           <div className="mt-6 p-4 bg-amber-50 rounded-lg">
             <p className="text-sm text-amber-800">
-              <strong>Current:</strong> Phase 2.1 - Navigation System Implementation (In Progress)
+              <strong>Current:</strong> Phase 2.3 Complete - All Base UI Components Implemented
             </p>
             <p className="text-xs text-amber-700 mt-1">
-              Modern responsive design patterns with mobile-first approach
+              Modern design system with form validation, modals, and dropdowns following Team 13 patterns
             </p>
+            <div className="mt-3">
+              <Link 
+                href="/components-demo"
+                className="inline-flex items-center text-xs text-amber-600 hover:text-amber-700 font-medium"
+              >
+                View UI Components Demo
+                <i className="ri-arrow-right-line ml-1"></i>
+              </Link>
+            </div>
           </div>
         </Card>
       </section>
