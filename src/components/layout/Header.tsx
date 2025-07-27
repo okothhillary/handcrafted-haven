@@ -4,11 +4,14 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { CartIcon } from '@/components/ui/Cart';
+import UserMenu from '@/components/auth/UserMenu';
+import { useWishlist } from '@/contexts/WishlistContext';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const { getWishlistCount } = useWishlist();
 
   const handleSearchClick = () => {
     if (pathname === '/shop') {
@@ -81,12 +84,7 @@ export default function Header() {
               </span>
             </button>
             <CartIcon />
-            <Link 
-              href="/auth/signin" 
-              className="bg-amber-700 text-white px-6 py-2 rounded-full hover:bg-amber-800 transition-colors font-medium whitespace-nowrap"
-            >
-              Sign In
-            </Link>
+            <UserMenu />
           </div>
 
           {/* Mobile Menu Button */}
@@ -119,17 +117,14 @@ export default function Header() {
                 Contact
               </Link>
               <Link href="/wishlist" className="text-gray-700 hover:text-amber-700 transition-colors font-medium">
-                Wishlist (0)
+                Wishlist ({getWishlistCount()})
               </Link>
               <Link href="/cart" className="text-gray-700 hover:text-amber-700 transition-colors font-medium">
                 Shopping Cart (0)
               </Link>
-              <Link 
-                href="/auth/signin" 
-                className="bg-amber-700 text-white px-6 py-2 rounded-full hover:bg-amber-800 transition-colors font-medium whitespace-nowrap inline-block"
-              >
-                Sign In
-              </Link>
+              <div className="pt-2">
+                <UserMenu />
+              </div>
             </nav>
           </div>
         )}

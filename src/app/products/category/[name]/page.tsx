@@ -1,27 +1,27 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import PageLayout from '../../../components/layout/PageLayout';
-import { BreadcrumbItem } from '../../../components/ui/Breadcrumb';
-import Card from '../../../components/ui/Card';
-import { LoadingSkeleton } from '../../../components/ui/Loading';
+import PageLayout from '../../../../components/layout/PageLayout';
+import { BreadcrumbItem } from '../../../../components/ui/Breadcrumb';
+import Card from '../../../../components/ui/Card';
+import { LoadingSkeleton } from '../../../../components/ui/Loading';
 
 export default function CategoryPage() {
   const params = useParams();
-  const category = (params?.category as string) || 'category';
+  const name = (params?.name as string) || 'category';
   
   // Create custom breadcrumbs for this page
   const breadcrumbs: BreadcrumbItem[] = [
     { label: 'Products', href: '/products' },
     { 
-      label: category?.split('-').map(word => 
+      label: name?.split('-').map(word => 
         word.charAt(0).toUpperCase() + word.slice(1)
       ).join(' ') || 'Category',
       isCurrentPage: true 
     }
   ];
 
-  const categoryTitle = category?.split('-').map(word => 
+  const categoryTitle = name?.split('-').map(word => 
     word.charAt(0).toUpperCase() + word.slice(1)
   ).join(' ') || 'Category';
 

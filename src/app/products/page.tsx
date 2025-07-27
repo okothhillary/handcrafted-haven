@@ -6,6 +6,7 @@ import Card from '@/components/ui/Card';
 import { SelectDropdown } from '@/components/ui/Dropdown';
 import Link from 'next/link';
 import { useCartActions } from '@/contexts/CartContext';
+import WishlistIcon from '@/components/wishlist/WishlistIcon';
 
 interface Product {
   id: number;
@@ -257,9 +258,20 @@ export default function ProductsPage() {
                         Featured
                       </div>
                     )}
-                    <button className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center bg-white/90 text-gray-600 rounded-full hover:bg-white hover:text-red-500 transition-colors">
-                      <i className="ri-heart-line"></i>
-                    </button>
+                    <div className="absolute top-4 right-4">
+                      <WishlistIcon 
+                        product={{
+                          id: product.id.toString(),
+                          name: product.name,
+                          price: product.price,
+                          originalPrice: product.originalPrice,
+                          image: product.image,
+                          artisan: product.artisan,
+                          rating: product.rating,
+                          category: product.category,
+                        }}
+                      />
+                    </div>
                   </div>
                   
                   <div className="p-6">

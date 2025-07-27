@@ -2,10 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string[] } }
+  { params }: { params: Promise<{ slug: string[] }> }
 ) {
+  const resolvedParams = await params;
   // Handle both /api/placeholder/400/400 and /api/placeholder/1920/1080 patterns
-  const [width, height] = params.slug;
+  const [width, height] = resolvedParams.slug;
   const w = parseInt(width) || 400;
   const h = parseInt(height) || 400;
   

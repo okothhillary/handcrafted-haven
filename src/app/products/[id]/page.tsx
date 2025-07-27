@@ -5,6 +5,8 @@ import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Link from 'next/link';
 import { useCartActions } from '@/contexts/CartContext';
+import WishlistIcon from '@/components/wishlist/WishlistIcon';
+import WishlistButton from '@/components/wishlist/WishlistButton';
 
 // Sample product data (in a real app, this would come from an API)
 const sampleProducts = [
@@ -147,10 +149,19 @@ export default function ProductDetailPage() {
               </Button>
               
               <div className="flex gap-4">
-                <Button variant="secondary" className="flex-1">
-                  <i className="ri-heart-line mr-2"></i>
-                  Add to Wishlist
-                </Button>
+                <WishlistButton
+                  product={{
+                    id: product.id.toString(),
+                    name: product.name,
+                    price: product.price,
+                    originalPrice: product.originalPrice,
+                    image: product.images[0],
+                    artisan: product.artisan,
+                    rating: product.rating,
+                    category: product.category,
+                  }}
+                  className="flex-1"
+                />
                 <Button variant="secondary" className="flex-1">
                   <i className="ri-share-line mr-2"></i>
                   Share
