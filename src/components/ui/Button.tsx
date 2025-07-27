@@ -1,0 +1,38 @@
+import { ButtonHTMLAttributes, ReactNode } from 'react';
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  children: ReactNode;
+  className?: string;
+}
+
+export default function Button({ 
+  variant = 'primary', 
+  size = 'md', 
+  children, 
+  className = '', 
+  ...props 
+}: ButtonProps) {
+  const baseClasses = 'font-semibold rounded-full transition-colors cursor-pointer';
+  
+  const variantClasses = {
+    primary: 'bg-amber-600 text-white hover:bg-amber-700',
+    secondary: 'border-2 border-amber-600 text-amber-600 bg-transparent hover:bg-amber-600 hover:text-white',
+    ghost: 'text-amber-600 bg-transparent hover:bg-amber-50'
+  };
+  
+  const sizeClasses = {
+    sm: 'px-4 py-2 text-sm',
+    md: 'px-6 py-3 text-base',
+    lg: 'px-8 py-4 text-lg'
+  };
+  
+  const combinedClasses = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+  
+  return (
+    <button className={combinedClasses} {...props}>
+      {children}
+    </button>
+  );
+}
