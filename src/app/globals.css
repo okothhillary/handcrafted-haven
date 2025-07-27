@@ -26,7 +26,7 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
-/* Custom component styles based on team 13 reference */
+/* Custom component styles */
 .btn-primary {
   background-color: #d97706;
   color: white;

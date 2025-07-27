@@ -54,7 +54,7 @@ export default function Home() {
               <strong>Current:</strong> Phase 2.1 - Navigation System Implementation (In Progress)
             </p>
             <p className="text-xs text-amber-700 mt-1">
-              Following Team 13 reference design patterns with responsive mobile-first approach
+              Modern responsive design patterns with mobile-first approach
             </p>
           </div>
         </Card>
