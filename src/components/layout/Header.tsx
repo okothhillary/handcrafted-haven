@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import { CartIcon } from '@/components/ui/Cart';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -79,16 +80,7 @@ export default function Header() {
                 0
               </span>
             </button>
-            <button 
-              onClick={handleCartClick}
-              className="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-amber-700 transition-colors cursor-pointer relative"
-              aria-label="View shopping cart"
-            >
-              <i className="ri-shopping-cart-line text-xl"></i>
-              <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                0
-              </span>
-            </button>
+            <CartIcon />
             <Link 
               href="/auth/signin" 
               className="bg-amber-700 text-white px-6 py-2 rounded-full hover:bg-amber-800 transition-colors font-medium whitespace-nowrap"

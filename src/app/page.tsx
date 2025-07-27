@@ -3,8 +3,11 @@
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Link from 'next/link';
+import { useCartActions } from '@/contexts/CartContext';
 
 export default function Home() {
+  const { addItem } = useCartActions();
+  
   // Sample data following team 13 patterns
   const featuredProducts = [
     {
@@ -191,7 +194,18 @@ export default function Home() {
                         <span className="text-lg text-gray-500 line-through">${product.originalPrice}</span>
                       )}
                     </div>
-                    <Button size="sm" className="px-4 py-2 text-sm">
+                    <Button 
+                      size="sm" 
+                      className="px-4 py-2 text-sm"
+                      onClick={() => addItem({
+                        id: product.id,
+                        name: product.name,
+                        artisan: product.artisan,
+                        price: product.price,
+                        image: product.image,
+                        materials: ['Handcrafted', 'Artisan Made']
+                      })}
+                    >
                       Add to Cart
                     </Button>
                   </div>

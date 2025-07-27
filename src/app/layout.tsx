@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Pacifico } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { CartProvider } from "@/contexts/CartContext";
 
 const pacifico = Pacifico({
   weight: '400',
@@ -36,11 +37,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${pacifico.variable} antialiased`}
       >
-        <Header />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <Footer />
+        <CartProvider>
+          <Header />
+          <main className="min-h-screen">
+            {children}
+          </main>
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );
