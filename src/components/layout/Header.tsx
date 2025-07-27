@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { CartIcon } from '@/components/ui/Cart';
 import UserMenu from '@/components/auth/UserMenu';
+import SearchBar from '@/components/search/SearchBar';
 import { useWishlist } from '@/contexts/WishlistContext';
 
 export default function Header() {
@@ -12,19 +13,6 @@ export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const { getWishlistCount } = useWishlist();
-
-  const handleSearchClick = () => {
-    if (pathname === '/shop') {
-      // If already on shop page, focus the search input
-      const searchInput = document.querySelector('input[placeholder*="Search for handmade items"]') as HTMLInputElement;
-      if (searchInput) {
-        searchInput.focus();
-      }
-    } else {
-      // If not on shop page, navigate to shop
-      router.push('/shop');
-    }
-  };
 
   const handleWishlistClick = () => {
     router.push('/wishlist');
@@ -45,43 +33,45 @@ export default function Header() {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-amber-700 transition-colors font-medium">
-              Home
-            </Link>
-            <Link href="/shop" className="text-gray-700 hover:text-amber-700 transition-colors font-medium">
-              Shop
-            </Link>
-            <Link href="/artisans" className="text-gray-700 hover:text-amber-700 transition-colors font-medium">
-              Artisans
-            </Link>
-            <Link href="/about" className="text-gray-700 hover:text-amber-700 transition-colors font-medium">
-              About
-            </Link>
-            <Link href="/contact" className="text-gray-700 hover:text-amber-700 transition-colors font-medium">
-              Contact
-            </Link>
-          </nav>
+          {/* Desktop Navigation & Search */}
+          <div className="hidden md:flex items-center space-x-6 flex-1 max-w-xl mx-8">
+            <nav className="flex items-center space-x-6">
+              <Link href="/" className="text-gray-700 hover:text-amber-700 transition-colors font-medium whitespace-nowrap">
+                Home
+              </Link>
+              <Link href="/shop" className="text-gray-700 hover:text-amber-700 transition-colors font-medium whitespace-nowrap">
+                Shop
+              </Link>
+              <Link href="/artisans" className="text-gray-700 hover:text-amber-700 transition-colors font-medium whitespace-nowrap">
+                Artisans
+              </Link>
+              <Link href="/about" className="text-gray-700 hover:text-amber-700 transition-colors font-medium whitespace-nowrap">
+                About
+              </Link>
+              <Link href="/contact" className="text-gray-700 hover:text-amber-700 transition-colors font-medium whitespace-nowrap">
+                Contact
+              </Link>
+            </nav>
+            
+            {/* Search Bar */}
+            <div className="flex-1 min-w-0">
+              <SearchBar />
+            </div>
+          </div>
 
           {/* Desktop Action Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <button 
-              onClick={handleSearchClick}
-              className="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-amber-700 transition-colors cursor-pointer"
-              aria-label="Search products"
-            >
-              <i className="ri-search-line text-xl"></i>
-            </button>
             <button 
               onClick={handleWishlistClick}
               className="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-amber-700 transition-colors cursor-pointer relative"
               aria-label="View wishlist"
             >
               <i className="ri-heart-line text-xl"></i>
-              <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                0
-              </span>
+              {getWishlistCount() > 0 && (
+                <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {getWishlistCount()}
+                </span>
+              )}
             </button>
             <CartIcon />
             <UserMenu />
@@ -100,6 +90,11 @@ export default function Header() {
         {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-100">
+            {/* Mobile Search */}
+            <div className="mb-4">
+              <SearchBar />
+            </div>
+            
             <nav className="flex flex-col space-y-4">
               <Link href="/" className="text-gray-700 hover:text-amber-700 transition-colors font-medium">
                 Home
