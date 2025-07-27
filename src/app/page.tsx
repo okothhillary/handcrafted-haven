@@ -99,9 +99,9 @@ export default function Home() {
                 Shop Now
               </Button>
             </Link>
-            <Link href="/artisans">
+            <Link href="/components-demo">
               <Button variant="secondary" size="lg" className="px-8 py-4 text-lg">
-                Meet Artisans
+                View Components
               </Button>
             </Link>
           </div>
