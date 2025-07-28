@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "build:deploy": "SKIP_LINT=true next build",
     "start": "next start",
     "lint": "next lint",
     "seed": "ts-node --project tsconfig.seed.json src/scripts/seed.ts"

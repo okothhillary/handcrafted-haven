@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import PageLayout from '@/components/layout/PageLayout';
 import { BreadcrumbItem } from '@/components/ui/Breadcrumb';
@@ -13,7 +13,7 @@ import WishlistIcon from '@/components/wishlist/WishlistIcon';
 import SearchBar from '@/components/search/SearchBar';
 import SearchFilters from '@/components/search/SearchFilters';
 
-export default function SearchPage() {
+function SearchContent() {
   const searchParams = useSearchParams();
   const { state, search, updateFilters } = useSearch();
   const { addItem } = useCartActions();
@@ -278,5 +278,13 @@ export default function SearchPage() {
         </div>
       </div>
     </PageLayout>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div>Loading search...</div>}>
+      <SearchContent />
+    </Suspense>
   );
 }

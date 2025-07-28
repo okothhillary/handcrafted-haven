@@ -236,7 +236,9 @@ const STORAGE_KEY = 'handcrafted_haven_recent_searches';
 // Helper functions
 const saveRecentSearches = (searches: string[]) => {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(searches));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(searches));
+    }
   } catch (error) {
     console.error('Failed to save recent searches:', error);
   }
@@ -244,8 +246,11 @@ const saveRecentSearches = (searches: string[]) => {
 
 const loadRecentSearches = (): string[] => {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      return stored ? JSON.parse(stored) : [];
+    }
+    return [];
   } catch (error) {
     console.error('Failed to load recent searches:', error);
     return [];
