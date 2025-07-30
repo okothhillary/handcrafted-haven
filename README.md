@@ -6,14 +6,14 @@ A modern e-commerce platform showcasing handcrafted artisan products from around
 
 🚀 **Production Site**: [handcrafted-haven-git-individual-olwal-olwalgeorges-projects.vercel.app](https://handcrafted-haven-git-individual-olwal-olwalgeorges-projects.vercel.app)
 
-*Updated with latest fixes and real artisan images*
+*Latest update includes comprehensive artisan data system, professional images, and enhanced user experience*
 
 ## 👥 Team Members
 
-- **George Olwal** - Frontend and deployment
-- **Hillary Okoth** - Database Design and intergration
+- **George Olwal** - Frontend Development and Deployment
+- **Hillary Okoth** - Database Design and Integration
 - **Emmanuel Ekenedo** - Authentication and Authorization
-- **Malcolm Nigel** - Validation and Test
+- **Malcolm Nigel** - Validation and Testing
 
 ## ✨ Features
 
@@ -24,26 +24,29 @@ A modern e-commerce platform showcasing handcrafted artisan products from around
 - Customer testimonials and reviews
 - Newsletter signup integration
 
-### 👨‍🎨 **Artisan Profiles**
-- Detailed artisan biographies and specialties
-- Professional profile photography
-- Product portfolios and ratings
-- Geographic location mapping
-- Social media integration
+### 👨‍🎨 **Artisan System** (NEW)
+- **Centralized Data Management**: Complete TypeScript-based artisan database
+- **Dynamic Statistics**: Real-time calculation of ratings, product counts, and performance metrics
+- **Professional Portraits**: High-quality artisan images with authentic workshop settings
+- **Detailed Profiles**: Comprehensive artisan biographies, specialties, and contact information
+- **Geographic Mapping**: Location-based artisan discovery
+- **Product Portfolio**: Integration with product catalog for artisan-specific filtering
 
 ### 🛍️ **E-commerce Functionality**
-- Advanced product filtering and search
-- Shopping cart with persistent state
-- Wishlist management
-- User account system
-- Order tracking and history
+- **Advanced Filtering**: Multi-criteria product search and filtering
+- **Smart Pagination**: Efficient data loading with customizable page sizes
+- **Shopping Cart**: Persistent cart state with real-time updates
+- **Wishlist Management**: Save and organize favorite products
+- **User Account System**: Complete authentication and profile management
+- **Order Tracking**: Full order history and status tracking
 
 ### 📱 **User Experience**
-- Fully responsive design (mobile-first)
+- Fully responsive design (mobile-first approach)
 - Progressive Web App (PWA) support
 - SEO optimized with proper meta tags
 - Fast loading with Next.js optimization
 - Accessibility compliant (WCAG 2.1)
+- Type-safe development with comprehensive TypeScript interfaces
 
 ## 🛠️ Tech Stack
 
@@ -107,28 +110,54 @@ npm start
 src/
 ├── app/                    # Next.js 15 App Router
 │   ├── page.tsx           # Homepage
-│   ├── artisans/          # Artisan profiles
+│   ├── artisans/          # Artisan profiles and detail pages
+│   │   └── [id]/          # Dynamic artisan detail pages
 │   ├── products/          # Product catalog
-│   ├── shop/              # Shopping interface
+│   ├── shop/              # Shopping interface with filtering
 │   ├── account/           # User account management
 │   └── api/               # API routes
 ├── components/            # Reusable React components
-│   ├── ui/                # Base UI components
+│   ├── ui/                # Base UI components (Pagination, Filters, Sort)
 │   ├── layout/            # Layout components
-│   └── auth/              # Authentication components
+│   ├── auth/              # Authentication components
+│   └── examples/          # Usage examples and demos
 ├── contexts/              # React Context providers
+├── data/                  # Centralized data management
+│   ├── artisans.ts        # Complete artisan database
+│   └── products.ts        # Product catalog data
 ├── models/                # TypeScript interfaces
-├── types/                 # Type definitions
+│   └── artisan.ts         # Artisan type definitions
+├── types/                 # Additional type definitions
 └── utils/                 # Utility functions
+    ├── artisan.ts         # Artisan statistics and filtering
+    ├── pagination.ts      # Pagination utilities
+    ├── filters.ts         # Advanced filtering logic
+    └── sorting.ts         # Data sorting utilities
 
 public/
 ├── images/                # Optimized images
 │   ├── products/          # Product photography
-│   ├── artisans/          # Artisan portraits
+│   ├── artisans/          # Professional artisan portraits
 │   ├── categories/        # Category images
 │   └── hero/              # Hero section images
 └── icons/                 # PWA icons and favicons
 ```
+
+## 🎯 Key Architectural Features
+
+### **Artisan Data System**
+- **Centralized Management**: Single source of truth in `src/data/artisans.ts`
+- **Dynamic Statistics**: Real-time calculation of ratings, product counts, years active
+- **Type Safety**: Complete TypeScript interfaces for all artisan data
+- **Utility Functions**: Advanced filtering, sorting, and search capabilities
+- **Professional Images**: High-quality artisan portraits with authentic settings
+
+### **Filtering & Pagination System**
+- **Advanced Filters**: Multi-criteria filtering with category, price, rating, availability
+- **Smart Pagination**: Configurable page sizes with efficient data loading
+- **Sorting Options**: Multiple sort criteria (name, price, rating, date)
+- **URL State Management**: Filter and pagination state preserved in URLs
+- **Type-Safe Implementation**: Full TypeScript support throughout
 
 ## 🎨 Design System
 
