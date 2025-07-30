@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import { SelectDropdown } from '@/components/ui/Dropdown';
@@ -25,10 +26,20 @@ interface Product {
 }
 
 export default function ProductsPage() {
+  const searchParams = useSearchParams();
   const [sortBy, setSortBy] = useState('featured');
   const [filterCategory, setFilterCategory] = useState('all');
+  const [filterArtisan, setFilterArtisan] = useState('all');
   const [priceRange, setPriceRange] = useState('all');
   const { addItem } = useCartActions();
+
+  // Handle URL parameters for artisan filtering
+  useEffect(() => {
+    const artisanParam = searchParams?.get('artisan');
+    if (artisanParam) {
+      setFilterArtisan(artisanParam);
+    }
+  }, [searchParams]);
 
   // Expanded product data following team 13 patterns
   const products: Product[] = [
@@ -163,10 +174,18 @@ export default function ProductsPage() {
     { value: '100+', label: '$100+' }
   ];
 
+  // Generate artisan filter options from products
+  const uniqueArtisans = Array.from(new Set(products.map(product => product.artisan)));
+  const artisanOptions = [
+    { value: 'all', label: 'All Artisans' },
+    ...uniqueArtisans.map(artisan => ({ value: artisan, label: artisan }))
+  ];
+
   // Filter and sort logic
   const filteredProducts = products
     .filter(product => {
       if (filterCategory !== 'all' && product.category !== filterCategory) return false;
+      if (filterArtisan !== 'all' && product.artisan !== filterArtisan) return false;
       
       if (priceRange !== 'all') {
         const [min, max] = priceRange.includes('+') 
@@ -194,11 +213,22 @@ export default function ProductsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Our Products
+              {filterArtisan !== 'all' ? `Products by ${filterArtisan}` : 'Our Products'}
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Discover unique handcrafted items from talented artisans around the world
+              {filterArtisan !== 'all' 
+                ? `Discover unique handcrafted items by ${filterArtisan}`
+                : 'Discover unique handcrafted items from talented artisans around the world'
+              }
             </p>
+            {filterArtisan !== 'all' && (
+              <div className="mt-4">
+                <Link href="/artisans" className="inline-flex items-center text-amber-600 hover:text-amber-700">
+                  <i className="ri-arrow-left-line mr-1"></i>
+                  Back to All Artisans
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Filters and Sorting */}
@@ -209,6 +239,13 @@ export default function ProductsPage() {
                 onChange={setFilterCategory}
                 options={categories}
                 placeholder="Category"
+                className="min-w-48"
+              />
+              <SelectDropdown
+                value={filterArtisan}
+                onChange={setFilterArtisan}
+                options={artisanOptions}
+                placeholder="Artisan"
                 className="min-w-48"
               />
               <SelectDropdown
@@ -343,6 +380,7 @@ export default function ProductsPage() {
                 variant="secondary" 
                 onClick={() => {
                   setFilterCategory('all');
+                  setFilterArtisan('all');
                   setPriceRange('all');
                   setSortBy('featured');
                 }}

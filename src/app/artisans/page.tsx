@@ -25,6 +25,70 @@ export default function ArtisansPage() {
   const [filterSpecialty, setFilterSpecialty] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Sample products data for dynamic calculation
+  const products = [
+    { id: 1, name: "Handwoven Ceramic Bowl", artisan: "Maria Rodriguez", rating: 4.8, reviews: 23 },
+    { id: 2, name: "Traditional Pottery Vase", artisan: "Maria Rodriguez", rating: 4.9, reviews: 15 },
+    { id: 3, name: "Ceramic Dinner Set", artisan: "Maria Rodriguez", rating: 4.7, reviews: 41 },
+    { id: 4, name: "Macrame Wall Hanging", artisan: "Sarah Chen", rating: 4.9, reviews: 31 },
+    { id: 5, name: "Fiber Art Tapestry", artisan: "Sarah Chen", rating: 4.8, reviews: 22 },
+    { id: 6, name: "Wooden Cutting Board", artisan: "James Wilson", rating: 4.7, reviews: 18 },
+    { id: 7, name: "Oak Dining Table", artisan: "James Wilson", rating: 4.9, reviews: 33 },
+    { id: 8, name: "Hand-carved Bookshelf", artisan: "James Wilson", rating: 4.8, reviews: 28 },
+    { id: 9, name: "Custom Jewelry Box", artisan: "James Wilson", rating: 4.6, reviews: 19 },
+    { id: 10, name: "Wire-wrapped Necklace", artisan: "Elena Popov", rating: 5.0, reviews: 12 },
+    { id: 11, name: "Silver Ring Set", artisan: "Elena Popov", rating: 4.9, reviews: 18 },
+    { id: 12, name: "Tea Ceremony Set", artisan: "Hiroshi Tanaka", rating: 4.9, reviews: 67 },
+    { id: 13, name: "Ceramic Sake Cups", artisan: "Hiroshi Tanaka", rating: 4.8, reviews: 43 },
+    { id: 14, name: "Traditional Bowl Set", artisan: "Hiroshi Tanaka", rating: 4.9, reviews: 29 },
+    { id: 15, name: "African Print Textile", artisan: "Amara Okonkwo", rating: 4.7, reviews: 25 },
+    { id: 16, name: "Woven Wall Art", artisan: "Amara Okonkwo", rating: 4.6, reviews: 33 },
+  ];
+
+  // Function to calculate dynamic artisan statistics
+  const calculateArtisanStats = (artisanName: string) => {
+    const artisanProducts = products.filter(product => product.artisan === artisanName);
+    const totalProducts = artisanProducts.length;
+    const totalReviews = artisanProducts.reduce((sum, product) => sum + product.reviews, 0);
+    const averageRating = totalProducts > 0 
+      ? artisanProducts.reduce((sum, product) => sum + (product.rating * product.reviews), 0) / totalReviews
+      : 0;
+    
+    return {
+      products: totalProducts,
+      reviews: totalReviews,
+      rating: Math.round(averageRating * 10) / 10 // Round to 1 decimal place
+    };
+  };
+
+  // Helper function to render star ratings
+  const renderStars = (rating: number) => {
+    const stars = [];
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+    
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(
+        <i key={`full-${i}`} className="ri-star-fill text-amber-500"></i>
+      );
+    }
+    
+    if (hasHalfStar) {
+      stars.push(
+        <i key="half" className="ri-star-half-fill text-amber-500"></i>
+      );
+    }
+    
+    const emptyStars = 5 - Math.ceil(rating);
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(
+        <i key={`empty-${i}`} className="ri-star-line text-gray-300"></i>
+      );
+    }
+    
+    return stars;
+  };
+
   const artisans: Artisan[] = [
     {
       id: 1,
@@ -153,7 +217,9 @@ export default function ArtisansPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredArtisans.map((artisan) => (
+            {featuredArtisans.map((artisan) => {
+              const stats = calculateArtisanStats(artisan.name);
+              return (
               <Card key={artisan.id} className="overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative">
                   <div 
@@ -170,9 +236,13 @@ export default function ArtisansPage() {
                 <div className="p-6">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-xl font-semibold text-gray-900">{artisan.name}</h3>
-                    <div className="flex items-center text-amber-500">
-                      <i className="ri-star-fill text-sm mr-1"></i>
-                      <span className="text-sm font-medium">{artisan.rating}</span>
+                    <div className="flex items-center">
+                      <div className="flex text-sm mr-2">
+                        {renderStars(stats.rating)}
+                      </div>
+                      <span className="text-sm font-medium text-gray-600">
+                        ({stats.rating})
+                      </span>
                     </div>
                   </div>
                   
@@ -194,31 +264,46 @@ export default function ArtisansPage() {
                   </p>
                   
                   <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                    <span>{artisan.products} products</span>
-                    <span>{artisan.reviews} reviews</span>
+                    <span>{stats.products} product{stats.products !== 1 ? 's' : ''}</span>
+                    <span>{stats.reviews} review{stats.reviews !== 1 ? 's' : ''}</span>
                     <span>{artisan.experience}</span>
                   </div>
                   
                   <div className="flex items-center justify-between">
-                    <Button size="sm" className="flex-1 mr-2">
-                      View Profile
-                    </Button>
+                    <Link href={`/products?artisan=${encodeURIComponent(artisan.name)}`} className="flex-1 mr-2">
+                      <Button size="sm" className="w-full">
+                        View Products
+                      </Button>
+                    </Link>
                     <div className="flex space-x-2">
                       {artisan.instagram && (
-                        <button className="w-8 h-8 bg-pink-500 text-white rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors">
+                        <a 
+                          href={`https://instagram.com/${artisan.instagram.replace('@', '').replace('instagram.com/', '').replace('https://', '').replace('http://', '')}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-8 h-8 bg-pink-500 text-white rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors"
+                          title={`Follow ${artisan.name} on Instagram`}
+                        >
                           <i className="ri-instagram-line text-sm"></i>
-                        </button>
+                        </a>
                       )}
                       {artisan.website && (
-                        <button className="w-8 h-8 bg-gray-500 text-white rounded-full flex items-center justify-center hover:bg-gray-600 transition-colors">
+                        <a 
+                          href={artisan.website.startsWith('http') ? artisan.website : `https://${artisan.website}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-8 h-8 bg-gray-500 text-white rounded-full flex items-center justify-center hover:bg-gray-600 transition-colors"
+                          title={`Visit ${artisan.name}'s website`}
+                        >
                           <i className="ri-external-link-line text-sm"></i>
-                        </button>
+                        </a>
                       )}
                     </div>
                   </div>
                 </div>
               </Card>
-            ))}
+            );
+            })}
           </div>
         </section>
 
@@ -268,7 +353,9 @@ export default function ArtisansPage() {
 
           {filteredArtisans.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredArtisans.map((artisan) => (
+              {filteredArtisans.map((artisan) => {
+                const stats = calculateArtisanStats(artisan.name);
+                return (
                 <Card key={artisan.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                   <div 
                     className="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 bg-cover bg-center"
@@ -278,9 +365,13 @@ export default function ArtisansPage() {
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="text-lg font-semibold text-gray-900">{artisan.name}</h3>
-                      <div className="flex items-center text-amber-500">
-                        <i className="ri-star-fill text-sm mr-1"></i>
-                        <span className="text-sm">{artisan.rating}</span>
+                      <div className="flex items-center">
+                        <div className="flex text-xs mr-1">
+                          {renderStars(stats.rating)}
+                        </div>
+                        <span className="text-xs text-gray-600">
+                          ({stats.rating})
+                        </span>
                       </div>
                     </div>
                     
@@ -302,16 +393,19 @@ export default function ArtisansPage() {
                     </p>
                     
                     <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-                      <span>{artisan.products} products</span>
-                      <span>{artisan.reviews} reviews</span>
+                      <span>{stats.products} product{stats.products !== 1 ? 's' : ''}</span>
+                      <span>{stats.reviews} review{stats.reviews !== 1 ? 's' : ''}</span>
                     </div>
                     
-                    <Button size="sm" className="w-full">
-                      View Profile
-                    </Button>
+                    <Link href={`/products?artisan=${encodeURIComponent(artisan.name)}`}>
+                      <Button size="sm" className="w-full">
+                        View Products
+                      </Button>
+                    </Link>
                   </div>
                 </Card>
-              ))}
+                );
+              })}
             </div>
           ) : (
             <Card className="p-12 text-center">
