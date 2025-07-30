@@ -4,62 +4,31 @@ import { useState } from 'react';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Link from 'next/link';
-
-interface Artisan {
-  id: number;
-  name: string;
-  location: string;
-  specialties: string[];
-  bio: string;
-  experience: string;
-  image: string;
-  products: number;
-  rating: number;
-  reviews: number;
-  featured: boolean;
-  instagram?: string;
-  website?: string;
-}
+import { ARTISANS, getFeaturedArtisans, getAllSpecialties } from '@/data/artisans';
+import { calculateArtisanStats } from '@/utils/artisan';
+import { Artisan } from '@/models/artisan';
 
 export default function ArtisansPage() {
   const [filterSpecialty, setFilterSpecialty] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Sample products data for dynamic calculation
-  const products = [
-    { id: 1, name: "Handwoven Ceramic Bowl", artisan: "Maria Rodriguez", rating: 4.8, reviews: 23 },
-    { id: 2, name: "Traditional Pottery Vase", artisan: "Maria Rodriguez", rating: 4.9, reviews: 15 },
-    { id: 3, name: "Ceramic Dinner Set", artisan: "Maria Rodriguez", rating: 4.7, reviews: 41 },
-    { id: 4, name: "Macrame Wall Hanging", artisan: "Sarah Chen", rating: 4.9, reviews: 31 },
-    { id: 5, name: "Fiber Art Tapestry", artisan: "Sarah Chen", rating: 4.8, reviews: 22 },
-    { id: 6, name: "Wooden Cutting Board", artisan: "James Wilson", rating: 4.7, reviews: 18 },
-    { id: 7, name: "Oak Dining Table", artisan: "James Wilson", rating: 4.9, reviews: 33 },
-    { id: 8, name: "Hand-carved Bookshelf", artisan: "James Wilson", rating: 4.8, reviews: 28 },
-    { id: 9, name: "Custom Jewelry Box", artisan: "James Wilson", rating: 4.6, reviews: 19 },
-    { id: 10, name: "Wire-wrapped Necklace", artisan: "Elena Popov", rating: 5.0, reviews: 12 },
-    { id: 11, name: "Silver Ring Set", artisan: "Elena Popov", rating: 4.9, reviews: 18 },
-    { id: 12, name: "Tea Ceremony Set", artisan: "Hiroshi Tanaka", rating: 4.9, reviews: 67 },
-    { id: 13, name: "Ceramic Sake Cups", artisan: "Hiroshi Tanaka", rating: 4.8, reviews: 43 },
-    { id: 14, name: "Traditional Bowl Set", artisan: "Hiroshi Tanaka", rating: 4.9, reviews: 29 },
-    { id: 15, name: "African Print Textile", artisan: "Amara Okonkwo", rating: 4.7, reviews: 25 },
-    { id: 16, name: "Woven Wall Art", artisan: "Amara Okonkwo", rating: 4.6, reviews: 33 },
-  ];
+  // Get specialties dynamically from artisan data
+  const specialties = ['all', ...getAllSpecialties().map(s => s.toLowerCase())];
 
-  // Function to calculate dynamic artisan statistics
-  const calculateArtisanStats = (artisanName: string) => {
-    const artisanProducts = products.filter(product => product.artisan === artisanName);
-    const totalProducts = artisanProducts.length;
-    const totalReviews = artisanProducts.reduce((sum, product) => sum + product.reviews, 0);
-    const averageRating = totalProducts > 0 
-      ? artisanProducts.reduce((sum, product) => sum + (product.rating * product.reviews), 0) / totalReviews
-      : 0;
+  // Filter artisans based on search and specialty filters
+  const filteredArtisans = ARTISANS.filter(artisan => {
+    const matchesSpecialty = filterSpecialty === 'all' || 
+      artisan.specialties.some(specialty => specialty.toLowerCase().includes(filterSpecialty));
+    const matchesSearch = searchQuery === '' ||
+      artisan.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      artisan.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      artisan.bio.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      artisan.specialties.some(specialty => specialty.toLowerCase().includes(searchQuery.toLowerCase()));
     
-    return {
-      products: totalProducts,
-      reviews: totalReviews,
-      rating: Math.round(averageRating * 10) / 10 // Round to 1 decimal place
-    };
-  };
+    return matchesSpecialty && matchesSearch;
+  });
+
+  const featuredArtisans = getFeaturedArtisans();
 
   // Helper function to render star ratings
   const renderStars = (rating: number) => {
@@ -88,108 +57,6 @@ export default function ArtisansPage() {
     
     return stars;
   };
-
-  const artisans: Artisan[] = [
-    {
-      id: 1,
-      name: "Maria Rodriguez",
-      location: "Oaxaca, Mexico",
-      specialties: ["Pottery", "Ceramics"],
-      bio: "Maria has been crafting pottery for over 20 years using traditional techniques passed down through generations. Her work reflects the rich cultural heritage of Oaxaca while incorporating modern design elements.",
-      experience: "20+ years",
-      image: "/images/artisans/maria-rodriguez.jpg",
-      products: 23,
-      rating: 4.9,
-      reviews: 89,
-      featured: true,
-      instagram: "@maria_pottery",
-      website: "maria-ceramics.com"
-    },
-    {
-      id: 2,
-      name: "Sarah Chen",
-      location: "Portland, Oregon, USA",
-      specialties: ["Textiles", "Macrame"],
-      bio: "Sarah specializes in contemporary macrame and fiber arts. She combines traditional knotting techniques with modern design aesthetics to create unique wall hangings and home decor pieces.",
-      experience: "8 years",
-      image: "/images/artisans/sarah-chen.jpg",
-      products: 15,
-      rating: 4.8,
-      reviews: 67,
-      featured: true,
-      instagram: "@sarah_fiber_art"
-    },
-    {
-      id: 3,
-      name: "James Wilson",
-      location: "Vermont, USA",
-      specialties: ["Woodworking", "Furniture"],
-      bio: "James is a master woodworker who creates functional art pieces from sustainably sourced hardwoods. Each piece showcases the natural beauty of wood grain while serving practical purposes.",
-      experience: "15+ years",
-      image: "/images/artisans/james-wilson.jpg",
-      products: 31,
-      rating: 4.9,
-      reviews: 124,
-      featured: true,
-      website: "wilson-woodworks.com"
-    },
-    {
-      id: 4,
-      name: "Elena Popov",
-      location: "Prague, Czech Republic",
-      specialties: ["Jewelry", "Metalwork"],
-      bio: "Elena creates intricate wire-wrapped jewelry using traditional European techniques. Her pieces often feature natural stones and crystals, each telling its own unique story.",
-      experience: "12 years",
-      image: "/images/artisans/elena-popov.jpg",
-      products: 18,
-      rating: 5.0,
-      reviews: 43,
-      featured: false,
-      instagram: "@elena_wirework"
-    },
-    {
-      id: 5,
-      name: "Hiroshi Tanaka",
-      location: "Kyoto, Japan",
-      specialties: ["Ceramics", "Pottery"],
-      bio: "Hiroshi is a master of traditional Japanese pottery techniques, specializing in tea ceremony items. His work embodies the principles of wabi-sabi and the beauty of imperfection.",
-      experience: "25+ years",
-      image: "/images/artisans/hiroshi-tanaka.jpg",
-      products: 27,
-      rating: 4.9,
-      reviews: 156,
-      featured: true
-    },
-    {
-      id: 6,
-      name: "Amara Okonkwo",
-      location: "Lagos, Nigeria",
-      specialties: ["Textiles", "Weaving"],
-      bio: "Amara creates vibrant textile art inspired by traditional Nigerian patterns and colors. Her work celebrates African heritage while addressing contemporary themes through fabric.",
-      experience: "10 years",
-      image: "/images/artisans/amara-okonkwo.jpg",
-      products: 22,
-      rating: 4.7,
-      reviews: 78,
-      featured: false,
-      instagram: "@amara_textiles"
-    }
-  ];
-
-  const specialties = ['all', 'pottery', 'textiles', 'woodworking', 'jewelry', 'ceramics', 'metalwork', 'weaving'];
-
-  const filteredArtisans = artisans.filter(artisan => {
-    const matchesSpecialty = filterSpecialty === 'all' || 
-      artisan.specialties.some(specialty => specialty.toLowerCase().includes(filterSpecialty));
-    const matchesSearch = searchQuery === '' ||
-      artisan.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      artisan.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      artisan.specialties.some(specialty => specialty.toLowerCase().includes(searchQuery.toLowerCase()));
-    
-    return matchesSpecialty && matchesSearch;
-  });
-
-  const featuredArtisans = artisans.filter(artisan => artisan.featured);
 
   return (
     <div className="min-h-screen bg-gray-50">

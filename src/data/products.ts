@@ -4,7 +4,8 @@
 export interface Product {
   id: number;
   name: string;
-  artisan: string;
+  artisan: string; // Artisan name for backward compatibility
+  artisanId?: number; // Reference to artisan ID for relational data
   price: number;
   originalPrice?: number;
   rating: number;
@@ -28,6 +29,7 @@ export const PRODUCTS: Product[] = [
     id: 1,
     name: "Handwoven Ceramic Bowl",
     artisan: "Maria Rodriguez",
+    artisanId: 1,
     price: 45,
     originalPrice: 60,
     rating: 4.8,
@@ -48,6 +50,7 @@ export const PRODUCTS: Product[] = [
     id: 2,
     name: "Macrame Wall Hanging",
     artisan: "Sarah Chen",
+    artisanId: 2,
     price: 78,
     rating: 4.9,
     reviews: 31,
@@ -66,6 +69,7 @@ export const PRODUCTS: Product[] = [
     id: 3,
     name: "Wooden Cutting Board",
     artisan: "James Wilson",
+    artisanId: 3,
     price: 35,
     rating: 4.7,
     reviews: 18,
@@ -83,6 +87,7 @@ export const PRODUCTS: Product[] = [
     id: 4,
     name: "Silver Wire Wrapped Pendant",
     artisan: "Elena Popov",
+    artisanId: 4,
     price: 52,
     originalPrice: 68,
     rating: 5.0,
@@ -102,6 +107,7 @@ export const PRODUCTS: Product[] = [
     id: 5,
     name: "Glass Art Vase",
     artisan: "Emma Davis",
+    artisanId: 12,
     price: 120,
     originalPrice: 150,
     rating: 4.7,
@@ -121,6 +127,7 @@ export const PRODUCTS: Product[] = [
     id: 6,
     name: "Knitted Wool Scarf",
     artisan: "Lisa Johnson",
+    artisanId: 9,
     price: 55,
     rating: 4.5,
     reviews: 27,
@@ -138,6 +145,7 @@ export const PRODUCTS: Product[] = [
     id: 7,
     name: "Woven Cotton Throw Blanket",
     artisan: "Lisa Martinez",
+    artisanId: 10,
     price: 125,
     rating: 4.8,
     reviews: 44,
@@ -155,6 +163,7 @@ export const PRODUCTS: Product[] = [
     id: 8,
     name: "Carved Wooden Sculpture",
     artisan: "Robert Brown",
+    artisanId: 13,
     price: 145,
     rating: 4.9,
     reviews: 19,
@@ -173,6 +182,7 @@ export const PRODUCTS: Product[] = [
     id: 9,
     name: "Handmade Gold Ring",
     artisan: "Anna Kowalski",
+    artisanId: 8,
     price: 95,
     originalPrice: 120,
     rating: 4.7,
@@ -192,6 +202,7 @@ export const PRODUCTS: Product[] = [
     id: 10,
     name: "Ceramic Tea Set",
     artisan: "Hiroshi Tanaka",
+    artisanId: 5,
     price: 180,
     rating: 4.9,
     reviews: 56,
@@ -210,6 +221,7 @@ export const PRODUCTS: Product[] = [
     id: 11,
     name: "Embroidered Silk Scarf",
     artisan: "Fatima Al-Zahra",
+    artisanId: 11,
     price: 67,
     rating: 4.8,
     reviews: 29,
@@ -227,6 +239,7 @@ export const PRODUCTS: Product[] = [
     id: 12,
     name: "Hand-forged Iron Candle Holder",
     artisan: "Thomas Mueller",
+    artisanId: 7,
     price: 58,
     rating: 4.6,
     reviews: 21,
@@ -261,6 +274,10 @@ export const getProductsOnSale = (): Product[] => {
 
 export const getProductsByArtisan = (artisan: string): Product[] => {
   return PRODUCTS.filter(product => product.artisan === artisan);
+};
+
+export const getProductsByArtisanId = (artisanId: number): Product[] => {
+  return PRODUCTS.filter(product => product.artisanId === artisanId);
 };
 
 export const searchProducts = (query: string): Product[] => {
