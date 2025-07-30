@@ -1,6 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useReducer, useCallback, ReactNode, useEffect } from 'react';
+import { PRODUCTS, getProducts, searchProducts, getProductsByCategory, getFeaturedProducts } from '@/data/products';
 
 // Types
 export interface SearchFilters {
@@ -72,93 +73,28 @@ const initialState: SearchState = {
   hasNextPage: false,
 };
 
-// Mock product data for search
-const mockProducts: SearchResult[] = [
-  {
-    id: '1',
-    name: 'Handwoven Ceramic Bowl',
-    artisan: 'Maria Rodriguez',
-    price: 45,
-    originalPrice: 60,
-    rating: 4.8,
-    reviews: 23,
-    image: '/api/placeholder/400/400',
-    category: 'pottery',
-    onSale: true,
-    featured: true,
-    description: 'Beautiful handwoven ceramic bowl perfect for serving or decoration',
-    materials: ['ceramic', 'clay'],
-    inStock: true,
-  },
-  {
-    id: '2',
-    name: 'Artisan Leather Wallet',
-    artisan: 'John Smith',
-    price: 85,
-    rating: 4.6,
-    reviews: 15,
-    image: '/api/placeholder/400/400',
-    category: 'leather',
-    description: 'Premium leather wallet with hand-stitched details',
-    materials: ['leather', 'cotton'],
-    inStock: true,
-  },
-  {
-    id: '3',
-    name: 'Woven Basket Set',
-    artisan: 'Sarah Wilson',
-    price: 65,
-    rating: 4.9,
-    reviews: 31,
-    image: '/api/placeholder/400/400',
-    category: 'textiles',
-    featured: true,
-    description: 'Set of three handwoven baskets in different sizes',
-    materials: ['bamboo', 'rattan'],
-    inStock: false,
-  },
-  {
-    id: '4',
-    name: 'Wooden Cutting Board',
-    artisan: 'Michael Brown',
-    price: 35,
-    rating: 4.4,
-    reviews: 18,
-    image: '/api/placeholder/400/400',
-    category: 'woodwork',
-    description: 'Handcrafted wooden cutting board from sustainable oak',
-    materials: ['oak', 'wood'],
-    inStock: true,
-  },
-  {
-    id: '5',
-    name: 'Glass Art Vase',
-    artisan: 'Emma Davis',
-    price: 120,
-    originalPrice: 150,
-    rating: 4.7,
-    reviews: 12,
-    image: '/api/placeholder/400/400',
-    category: 'glasswork',
-    onSale: true,
-    description: 'Elegant blown glass vase with unique color patterns',
-    materials: ['glass'],
-    inStock: true,
-  },
-  {
-    id: '6',
-    name: 'Knitted Wool Scarf',
-    artisan: 'Lisa Johnson',
-    price: 55,
-    rating: 4.5,
-    reviews: 27,
-    image: '/api/placeholder/400/400',
-    category: 'textiles',
-    description: 'Soft merino wool scarf with traditional patterns',
-    materials: ['wool', 'cotton'],
-    inStock: true,
-  },
-];
+// Utility function to convert Product to SearchResult
+const convertToSearchResult = (product: any): SearchResult => ({
+  id: product.id.toString(),
+  name: product.name,
+  artisan: product.artisan,
+  price: product.price,
+  originalPrice: product.originalPrice,
+  rating: product.rating,
+  reviews: product.reviews,
+  image: product.image,
+  category: product.category,
+  onSale: product.onSale || false,
+  featured: product.featured || false,
+  description: product.description,
+  materials: product.materials,
+  inStock: product.inStock !== false,
+});
+
+// Convert all products to SearchResult format
+const getAllSearchResults = (): SearchResult[] => {
+  return PRODUCTS.map(convertToSearchResult);
+};
 
 // Reducer
 function searchReducer(state: SearchState, action: SearchAction): SearchState {
@@ -266,7 +202,7 @@ const performSearch = async (
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 300));
 
-  let filteredProducts = [...mockProducts];
+  let filteredProducts = getAllSearchResults();
 
   // Apply text search
   if (query.trim()) {
@@ -276,7 +212,7 @@ const performSearch = async (
       product.artisan.toLowerCase().includes(searchLower) ||
       product.description.toLowerCase().includes(searchLower) ||
       product.category.toLowerCase().includes(searchLower) ||
-      product.materials.some(material => material.toLowerCase().includes(searchLower))
+      product.materials.some((material: string) => material.toLowerCase().includes(searchLower))
     );
   }
 

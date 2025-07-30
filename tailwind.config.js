@@ -43,7 +43,7 @@ export default {
         'accent-900': '#78350f',
       },
       fontFamily: {
-        brand: ['var(--font-pacifico)', 'cursive'],
+        brand: ['Pacifico', 'cursive'],
         sans: ['var(--font-geist-sans)', 'system-ui', 'sans-serif'],
         mono: ['var(--font-geist-mono)', 'monospace'],
       },

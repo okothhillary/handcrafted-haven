@@ -1,0 +1,13 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#F8F5F0"/>
+  <rect x="80" y="150" width="240" height="120" rx="10" fill="#8B5A3C" stroke="#654321" stroke-width="2"/>
+  <path d="M100 170 Q150 160 200 170 Q250 180 300 170" stroke="#A0845C" stroke-width="2" fill="none"/>
+  <path d="M100 190 Q150 185 200 190 Q250 195 300 190" stroke="#A0845C" stroke-width="1" fill="none"/>
+  <path d="M100 210 Q150 205 200 210 Q250 215 300 210" stroke="#A0845C" stroke-width="1" fill="none"/>
+  <path d="M100 230 Q150 225 200 230 Q250 235 300 230" stroke="#A0845C" stroke-width="1" fill="none"/>
+  <path d="M100 250 Q150 245 200 250 Q250 255 300 250" stroke="#A0845C" stroke-width="1" fill="none"/>
+  <circle cx="110" cy="160" r="2" fill="#654321"/>
+  <circle cx="290" cy="160" r="2" fill="#654321"/>
+  <text x="200" y="320" text-anchor="middle" font-family="serif" font-size="18" fill="#8B5A3C">Cutting Board</text>
+  <text x="200" y="340" text-anchor="middle" font-family="serif" font-size="14" fill="#A0845C">Walnut Wood</text>
+</svg>

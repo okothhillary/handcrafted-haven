@@ -1,143 +1,33 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import { SelectDropdown } from '@/components/ui/Dropdown';
 import Link from 'next/link';
 import { useCartActions } from '@/contexts/CartContext';
 import WishlistIcon from '@/components/wishlist/WishlistIcon';
+import { PRODUCTS, type Product } from '@/data/products';
 
-interface Product {
-  id: number;
-  name: string;
-  artisan: string;
-  price: number;
-  originalPrice?: number;
-  rating: number;
-  reviews: number;
-  image: string;
-  category: string;
-  onSale?: boolean;
-  featured?: boolean;
-  description: string;
-  materials: string[];
-}
-
-export default function ProductsPage() {
+function ProductsContent() {
+  const searchParams = useSearchParams();
   const [sortBy, setSortBy] = useState('featured');
   const [filterCategory, setFilterCategory] = useState('all');
+  const [filterArtisan, setFilterArtisan] = useState('all');
   const [priceRange, setPriceRange] = useState('all');
   const { addItem } = useCartActions();
 
-  // Expanded product data following team 13 patterns
-  const products: Product[] = [
-    {
-      id: 1,
-      name: "Handwoven Ceramic Bowl",
-      artisan: "Maria Rodriguez",
-      price: 45,
-      originalPrice: 60,
-      rating: 4.8,
-      reviews: 23,
-      image: "/api/placeholder/400/400",
-      category: "pottery",
-      onSale: true,
-      featured: true,
-      description: "A beautiful handwoven ceramic bowl perfect for serving or as a decorative piece.",
-      materials: ["Ceramic", "Natural Glaze"]
-    },
-    {
-      id: 2,
-      name: "Macrame Wall Hanging",
-      artisan: "Sarah Chen",
-      price: 78,
-      rating: 4.9,
-      reviews: 31,
-      image: "/api/placeholder/400/400",
-      category: "textiles",
-      featured: true,
-      description: "Intricate macrame wall hanging that adds bohemian charm to any space.",
-      materials: ["Cotton Cord", "Wooden Ring"]
-    },
-    {
-      id: 3,
-      name: "Wooden Cutting Board",
-      artisan: "James Wilson",
-      price: 35,
-      rating: 4.7,
-      reviews: 18,
-      image: "/api/placeholder/400/400",
-      category: "woodwork",
-      description: "Durable hardwood cutting board with natural grain patterns.",
-      materials: ["Maple Wood", "Food-Safe Finish"]
-    },
-    {
-      id: 4,
-      name: "Silver Wire Wrapped Pendant",
-      artisan: "Elena Popov",
-      price: 52,
-      originalPrice: 68,
-      rating: 5.0,
-      reviews: 12,
-      image: "/api/placeholder/400/400",
-      category: "jewelry",
-      onSale: true,
-      description: "Elegant silver wire wrapped pendant with natural stone centerpiece.",
-      materials: ["Sterling Silver", "Natural Stone"]
-    },
-    {
-      id: 5,
-      name: "Quilted Table Runner",
-      artisan: "Rose Thompson",
-      price: 89,
-      rating: 4.6,
-      reviews: 15,
-      image: "/api/placeholder/400/400",
-      category: "textiles",
-      description: "Beautifully quilted table runner with geometric patterns.",
-      materials: ["Cotton Fabric", "Cotton Batting"]
-    },
-    {
-      id: 6,
-      name: "Hand-Carved Wooden Spoons Set",
-      artisan: "Michael Oak",
-      price: 28,
-      rating: 4.8,
-      reviews: 42,
-      image: "/api/placeholder/400/400",
-      category: "woodwork",
-      description: "Set of three hand-carved wooden spoons for cooking and serving.",
-      materials: ["Cherry Wood", "Natural Oil Finish"]
-    },
-    {
-      id: 7,
-      name: "Ceramic Planter with Drainage",
-      artisan: "Lisa Park",
-      price: 65,
-      originalPrice: 85,
-      rating: 4.4,
-      reviews: 28,
-      image: "/api/placeholder/400/400",
-      category: "pottery",
-      onSale: true,
-      description: "Modern ceramic planter with built-in drainage system.",
-      materials: ["Stoneware Clay", "Matte Glaze"]
-    },
-    {
-      id: 8,
-      name: "Handmade Leather Wallet",
-      artisan: "David Craft",
-      price: 95,
-      rating: 4.9,
-      reviews: 37,
-      image: "/api/placeholder/400/400",
-      category: "leather",
-      featured: true,
-      description: "Premium handcrafted leather wallet with multiple card slots.",
-      materials: ["Full Grain Leather", "Waxed Thread"]
+  // Handle URL parameters for artisan filtering
+  useEffect(() => {
+    const artisanParam = searchParams?.get('artisan');
+    if (artisanParam) {
+      setFilterArtisan(artisanParam);
     }
-  ];
+  }, [searchParams]);
+
+  // Use centralized product data
+  const products = PRODUCTS;
 
   const categories = [
     { value: 'all', label: 'All Categories' },
@@ -145,6 +35,7 @@ export default function ProductsPage() {
     { value: 'textiles', label: 'Textiles & Fiber' },
     { value: 'woodwork', label: 'Woodworking' },
     { value: 'jewelry', label: 'Jewelry & Metalwork' },
+    { value: 'metalwork', label: 'Metalwork' },
     { value: 'leather', label: 'Leather Goods' }
   ];
 
@@ -163,10 +54,18 @@ export default function ProductsPage() {
     { value: '100+', label: '$100+' }
   ];
 
+  // Generate artisan filter options from products
+  const uniqueArtisans = Array.from(new Set(products.map(product => product.artisan)));
+  const artisanOptions = [
+    { value: 'all', label: 'All Artisans' },
+    ...uniqueArtisans.map(artisan => ({ value: artisan, label: artisan }))
+  ];
+
   // Filter and sort logic
   const filteredProducts = products
     .filter(product => {
       if (filterCategory !== 'all' && product.category !== filterCategory) return false;
+      if (filterArtisan !== 'all' && product.artisan !== filterArtisan) return false;
       
       if (priceRange !== 'all') {
         const [min, max] = priceRange.includes('+') 
@@ -194,11 +93,22 @@ export default function ProductsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Our Products
+              {filterArtisan !== 'all' ? `Products by ${filterArtisan}` : 'Our Products'}
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Discover unique handcrafted items from talented artisans around the world
+              {filterArtisan !== 'all' 
+                ? `Discover unique handcrafted items by ${filterArtisan}`
+                : 'Discover unique handcrafted items from talented artisans around the world'
+              }
             </p>
+            {filterArtisan !== 'all' && (
+              <div className="mt-4">
+                <Link href="/artisans" className="inline-flex items-center text-amber-600 hover:text-amber-700">
+                  <i className="ri-arrow-left-line mr-1"></i>
+                  Back to All Artisans
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Filters and Sorting */}
@@ -209,6 +119,13 @@ export default function ProductsPage() {
                 onChange={setFilterCategory}
                 options={categories}
                 placeholder="Category"
+                className="min-w-48"
+              />
+              <SelectDropdown
+                value={filterArtisan}
+                onChange={setFilterArtisan}
+                options={artisanOptions}
+                placeholder="Artisan"
                 className="min-w-48"
               />
               <SelectDropdown
@@ -244,10 +161,21 @@ export default function ProductsPage() {
               <Card key={product.id} className="group cursor-pointer hover:shadow-xl transition-all duration-300">
                 <Link href={`/products/${product.id}`}>
                   <div className="relative overflow-hidden">
-                    <div 
-                      className="w-full h-64 bg-gradient-to-br from-gray-100 to-gray-200 bg-cover bg-center transition-transform duration-300 group-hover:scale-110"
-                      style={{ backgroundImage: `url(${product.image})` }}
-                    />
+                    <div className="w-full h-64 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+                      <img 
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        onLoad={() => {
+                          console.log(`✅ Image loaded successfully: ${product.name} - ${product.image}`);
+                        }}
+                        onError={(e) => {
+                          console.log(`❌ Image failed to load: ${product.name} - ${product.image}`);
+                          // Fallback to gradient background if image fails
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                      />
+                    </div>
                     {product.onSale && (
                       <div className="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
                         Sale
@@ -343,6 +271,7 @@ export default function ProductsPage() {
                 variant="secondary" 
                 onClick={() => {
                   setFilterCategory('all');
+                  setFilterArtisan('all');
                   setPriceRange('all');
                   setSortBy('featured');
                 }}
@@ -363,5 +292,18 @@ export default function ProductsPage() {
         </section>
       )}
     </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-amber-600 mx-auto mb-4"></div>
+        <p className="text-gray-600">Loading products...</p>
+      </div>
+    </div>}>
+      <ProductsContent />
+    </Suspense>
   );
 }

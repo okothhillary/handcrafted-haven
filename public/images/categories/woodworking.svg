@@ -1,0 +1,15 @@
+<svg width="300" height="200" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="300" height="200" fill="#F8F5F0"/>
+  <rect x="80" y="80" width="80" height="40" rx="5" fill="#8B5A3C" stroke="#654321" stroke-width="2"/>
+  <path d="M90 90 Q120 85 150 90" stroke="#A0845C" stroke-width="1" fill="none"/>
+  <path d="M90 100 Q120 95 150 100" stroke="#A0845C" stroke-width="1" fill="none"/>
+  <path d="M90 110 Q120 105 150 110" stroke="#A0845C" stroke-width="1" fill="none"/>
+  
+  <ellipse cx="200" cy="90" rx="20" ry="30" fill="#8B5A3C" stroke="#654321" stroke-width="2"/>
+  <circle cx="200" cy="80" r="8" fill="#A0845C"/>
+  
+  <circle cx="120" cy="140" r="15" fill="#8B5A3C"/>
+  <circle cx="120" cy="140" r="10" fill="#A0845C"/>
+  
+  <text x="150" y="180" text-anchor="middle" font-family="serif" font-size="16" fill="#8B5A3C">Woodworking</text>
+</svg>

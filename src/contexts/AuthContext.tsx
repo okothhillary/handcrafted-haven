@@ -106,7 +106,7 @@ const mockUsers: User[] = [
     id: '1',
     email: 'demo@example.com',
     name: 'Demo User',
-    avatar: '/api/placeholder/150/150',
+    avatar: '/images/artisans/maria-rodriguez.jpg',
     joinedAt: new Date('2024-01-15'),
     preferences: {
       notifications: true,
