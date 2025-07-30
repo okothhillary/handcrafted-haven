@@ -56,3 +56,10 @@ download_missing_images.py
 fix_missing_images.py
 download_artisan_images.py
 download_team13_products.py
+download_additional_artisan_images.py
+download_specific_artisan_images.py
+download_team13_reddy_images.py
+verify_images.py
+
+# exclude all Python scripts used for image management
+*.py
