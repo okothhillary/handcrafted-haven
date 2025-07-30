@@ -57,7 +57,7 @@ export default function Home() {
             originalPrice: 60,
             rating: 4.8,
             reviews: 23,
-            image: "https://readdy.ai/api/search-image?query=Beautiful%20handcrafted%20ceramic%20bowl%20with%20organic%20curves%20and%20earthy%20glazes%2C%20photographed%20on%20clean%20white%20background%20with%20soft%20natural%20lighting%2C%20artisanal%20pottery%20showcasing%20traditional%20craftsmanship%20techniques&width=400&height=400&seq=ceramic-bowl-1&orientation=squarish",
+            image: "/images/products/ceramic-bowl.jpg",
             onSale: true,
             category: "Pottery & Ceramics",
             description: "Handcrafted ceramic bowl with beautiful glazing techniques",
@@ -71,7 +71,7 @@ export default function Home() {
             price: 78,
             rating: 4.9,
             reviews: 31,
-            image: "https://readdy.ai/api/search-image?query=Elegant%20macrame%20wall%20hanging%20with%20intricate%20knotwork%20patterns%20in%20natural%20cotton%20cord%2C%20minimalist%20bohemian%20design%20on%20clean%20white%20background%2C%20handcrafted%20textile%20art%20piece&width=400&height=400&seq=macrame-wall-2&orientation=squarish",
+            image: "/images/products/macrame-wall.jpg",
             category: "Textiles & Fiber",
             description: "Intricate macrame wall art made with natural cotton",
             stock: 12,
@@ -84,7 +84,7 @@ export default function Home() {
             price: 35,
             rating: 4.7,
             reviews: 18,
-            image: "https://readdy.ai/api/search-image?query=Premium%20handcrafted%20wooden%20cutting%20board%20made%20from%20rich%20walnut%20wood%20with%20smooth%20finish%2C%20beautiful%20wood%20grain%20patterns%20visible%2C%20photographed%20on%20white%20background%20with%20natural%20lighting&width=400&height=400&seq=wooden-board-3&orientation=squarish",
+            image: "/images/products/wooden-board.jpg",
             category: "Woodworking",
             description: "Premium walnut cutting board with natural wood grain",
             stock: 15,
@@ -98,7 +98,7 @@ export default function Home() {
             originalPrice: 68,
             rating: 5.0,
             reviews: 12,
-            image: "https://readdy.ai/api/search-image?query=Delicate%20silver%20wire%20wrapped%20pendant%20with%20natural%20gemstone%20center%2C%20intricate%20metalwork%20showcasing%20artisan%20jewelry%20craftsmanship%2C%20photographed%20on%20clean%20white%20background%20with%20soft%20lighting&width=400&height=400&seq=silver-pendant-4&orientation=squarish",
+            image: "/images/products/silver-pendant.jpg",
             onSale: true,
             category: "Jewelry & Metalwork",
             description: "Delicate silver wire wrapped pendant with natural gemstone",
@@ -112,7 +112,7 @@ export default function Home() {
             price: 89,
             rating: 4.6,
             reviews: 27,
-            image: "https://readdy.ai/api/search-image?query=Elegant%20hand-thrown%20pottery%20vase%20with%20unique%20glazing%20and%20organic%20shape%2C%20artisan%20ceramics%20on%20white%20background%20with%20studio%20lighting&width=400&height=400&seq=pottery-vase-5&orientation=squarish",
+            image: "/images/products/pottery-vase.jpg",
             category: "Pottery & Ceramics",
             description: "Elegant hand-thrown vase with unique glazing patterns",
             stock: 10,
@@ -125,7 +125,7 @@ export default function Home() {
             price: 68,
             rating: 4.8,
             reviews: 19,
-            image: "https://readdy.ai/api/search-image?query=Beautiful%20handwoven%20wool%20scarf%20with%20traditional%20patterns%20in%20natural%20colors%2C%20soft%20merino%20wool%20textile%20on%20clean%20background&width=400&height=400&seq=wool-scarf-6&orientation=squarish",
+            image: "/images/products/wool-scarf.jpg",
             category: "Textiles & Fiber",
             description: "Soft merino wool scarf with traditional weaving patterns",
             stock: 14,
@@ -138,7 +138,7 @@ export default function Home() {
             price: 42,
             rating: 4.9,
             reviews: 35,
-            image: "https://readdy.ai/api/search-image?query=Premium%20handcrafted%20leather%20wallet%20with%20hand-stitched%20details%20and%20rich%20brown%20patina%2C%20artisan%20leatherwork%20on%20clean%20background&width=400&height=400&seq=leather-wallet-7&orientation=squarish",
+            image: "/images/products/leather-wallet.jpg",
             category: "Leather Goods",
             description: "Premium leather wallet with hand-stitched construction",
             stock: 22,
@@ -152,7 +152,7 @@ export default function Home() {
             originalPrice: 150,
             rating: 4.7,
             reviews: 8,
-            image: "https://readdy.ai/api/search-image?query=Beautiful%20hand-carved%20wooden%20sculpture%20with%20intricate%20details%20and%20smooth%20finish%2C%20artistic%20woodwork%20on%20white%20background&width=400&height=400&seq=wood-sculpture-8&orientation=squarish",
+            image: "/images/products/wood-sculpture.jpg",
             onSale: true,
             category: "Woodworking",
             description: "Intricate hand-carved wooden sculpture with detailed craftsmanship",
@@ -178,28 +178,28 @@ export default function Home() {
           {
             name: "Pottery & Ceramics",
             count: 156,
-            image: "https://readdy.ai/api/search-image?query=Collection%20of%20handmade%20ceramic%20pottery%20including%20bowls%2C%20vases%20and%20mugs%20with%20earthy%20glazes%20and%20organic%20shapes%2C%20artisanal%20ceramics%20on%20clean%20background%20with%20warm%20lighting&width=300&height=200&seq=pottery-cat-1&orientation=landscape",
+            image: "/images/categories/pottery.jpg",
             href: "/products?category=pottery",
             description: "Handcrafted ceramics and pottery from skilled artisans"
           },
           {
             name: "Textiles & Fiber",
             count: 234,
-            image: "https://readdy.ai/api/search-image?query=Beautiful%20handwoven%20textiles%20including%20scarves%2C%20wall%20hangings%20and%20fabric%20art%20in%20natural%20fibers%2C%20showcasing%20traditional%20weaving%20techniques%20on%20clean%20background&width=300&height=200&seq=textiles-cat-2&orientation=landscape",  
+            image: "/images/categories/textiles.jpg",  
             href: "/products?category=textiles",
             description: "Woven textiles and fiber arts from around the world"
           },
           {
             name: "Woodworking",
             count: 187,
-            image: "https://readdy.ai/api/search-image?query=Handcrafted%20wooden%20items%20including%20cutting%20boards%2C%20bowls%20and%20decorative%20pieces%20showing%20beautiful%20wood%20grain%20and%20craftsmanship%2C%20photographed%20on%20clean%20background&width=300&height=200&seq=wood-cat-3&orientation=landscape",
+            image: "/images/categories/woodworking.jpg",
             href: "/products?category=woodwork",
             description: "Fine woodworking and carved pieces by master craftspeople"
           },
           {
             name: "Jewelry & Metalwork",
             count: 298,
-            image: "https://readdy.ai/api/search-image?query=Artisan%20jewelry%20collection%20featuring%20handmade%20rings%2C%20necklaces%20and%20earrings%20in%20silver%20and%20gold%20with%20natural%20gemstones%2C%20elegant%20metalwork%20on%20clean%20background&width=300&height=200&seq=jewelry-cat-4&orientation=landscape",
+            image: "/images/categories/jewelry.jpg",
             href: "/products?category=jewelry",
             description: "Handcrafted jewelry and metalwork with precious materials"
           }
@@ -296,7 +296,7 @@ export default function Home() {
       <section 
         className="relative h-screen flex items-center justify-center bg-cover bg-center"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://readdy.ai/api/search-image?query=Artisan%20marketplace%20workshop%20scene%20with%20craftspeople%20creating%20handmade%20items%2C%20warm%20natural%20lighting%20streaming%20through%20windows%2C%20wooden%20workbenches%20with%20tools%20and%20materials%2C%20cozy%20creative%20atmosphere%20showcasing%20traditional%20craftsmanship%2C%20beautiful%20depth%20of%20field%20with%20craft%20materials%20in%20foreground&width=1920&height=1080&seq=hero-bg-1&orientation=landscape')`
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/hero/workshop-bg.jpg')`
         }}
       >
         <div className="text-center text-white max-w-4xl px-4 z-10">
