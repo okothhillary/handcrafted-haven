@@ -4,6 +4,7 @@ import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Link from 'next/link';
 import { useCartActions } from '@/contexts/CartContext';
+import SEO, { generatePageSEO } from '@/components/SEO/SEO';
 
 export default function Home() {
   const { addItem } = useCartActions();
@@ -80,7 +81,9 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <>
+      <SEO {...generatePageSEO('home')} />
+      <div className="min-h-screen bg-white">
       {/* Hero Section - Following team 13 hero patterns */}
       <section className="relative h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100">
         <div className="absolute inset-0 bg-[url('/api/placeholder/1920/1080')] bg-cover bg-center opacity-10"></div>
@@ -334,6 +337,7 @@ export default function Home() {
           </Card>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 }

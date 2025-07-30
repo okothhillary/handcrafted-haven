@@ -8,6 +8,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
 import { SearchProvider } from "@/contexts/SearchContext";
 import { OrderProvider } from "@/contexts/OrderContext";
+import { SkipLink } from "@/utils/accessibility";
 
 const pacifico = Pacifico({
   weight: '400',
@@ -41,13 +42,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${pacifico.variable} antialiased`}
       >
+        <SkipLink />
         <AuthProvider>
           <WishlistProvider>
             <CartProvider>
               <OrderProvider>
                 <SearchProvider>
                   <Header />
-                  <main className="min-h-screen">
+                  <main id="main-content" className="min-h-screen">
                     {children}
                   </main>
                   <Footer />

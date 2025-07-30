@@ -3,10 +3,13 @@
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Link from 'next/link';
+import SEO, { generatePageSEO } from '@/components/SEO/SEO';
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
+      <SEO {...generatePageSEO('about')} />
+      <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <section className="relative h-96 lg:h-[500px] flex items-center justify-center bg-gradient-to-br from-amber-600 via-amber-500 to-orange-500">
         <div className="absolute inset-0 bg-black/30"></div>
@@ -304,6 +307,7 @@ export default function AboutPage() {
           </div>
         </section>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
