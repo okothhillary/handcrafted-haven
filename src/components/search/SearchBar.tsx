@@ -138,7 +138,7 @@ export default function SearchBar({
   }, [autoFocus]);
 
   return (
-    <div className={`relative ${className}`} ref={dropdownRef}>
+    <div className={`relative${className ? ` ${className}` : ''}`} ref={dropdownRef}>
       <form onSubmit={handleSubmit} className="relative">
         <div className="relative flex items-center">
           <input

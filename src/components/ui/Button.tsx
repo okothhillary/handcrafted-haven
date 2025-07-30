@@ -28,7 +28,7 @@ export default function Button({
     lg: 'px-8 py-4 text-lg'
   };
   
-  const combinedClasses = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+  const combinedClasses = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]}${className ? ` ${className}` : ''}`;
   
   return (
     <button className={combinedClasses} {...props}>

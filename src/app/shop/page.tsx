@@ -213,13 +213,25 @@ export default function ShopPage() {
                     <Card key={product.id} className={`group cursor-pointer ${viewMode === 'list' ? 'flex' : ''}`}>
                       <div className={`relative ${viewMode === 'list' ? 'w-32 flex-shrink-0' : ''}`}>
                         <Link href={`/products/${product.id}`}>
-                          <img
-                            src={product.image}
-                            alt={product.name}
-                            className={`object-cover rounded-t-lg group-hover:opacity-90 transition-opacity ${
-                              viewMode === 'grid' ? 'w-full h-48' : 'w-32 h-32 rounded-l-lg rounded-t-none'
-                            }`}
-                          />
+                          <div className={`relative overflow-hidden ${
+                            viewMode === 'grid' ? 'w-full h-48' : 'w-32 h-32'
+                          } bg-gradient-to-br from-gray-100 to-gray-200 ${
+                            viewMode === 'grid' ? 'rounded-t-lg' : 'rounded-l-lg rounded-t-none'
+                          }`}>
+                            <img
+                              src={product.image}
+                              alt={product.name}
+                              className={`w-full h-full object-cover group-hover:opacity-90 transition-opacity`}
+                              onLoad={() => {
+                                console.log(`✅ Image loaded successfully: ${product.name} - ${product.image}`);
+                              }}
+                              onError={(e) => {
+                                console.log(`❌ Image failed to load: ${product.name} - ${product.image}`);
+                                // Fallback to gradient background if image fails
+                                (e.target as HTMLImageElement).style.display = 'none';
+                              }}
+                            />
+                          </div>
                         </Link>
                         
                         {product.onSale && (

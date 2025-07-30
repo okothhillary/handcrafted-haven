@@ -55,3 +55,4 @@ download_additional_images.py
 download_missing_images.py
 fix_missing_images.py
 download_artisan_images.py
+download_team13_products.py

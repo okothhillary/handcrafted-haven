@@ -8,30 +8,11 @@ import { useCartActions } from '@/contexts/CartContext';
 import WishlistIcon from '@/components/wishlist/WishlistIcon';
 import WishlistButton from '@/components/wishlist/WishlistButton';
 import { ReviewForm, ReviewDisplay, ReviewSummary } from '@/components/ui/Reviews';
-
-// Sample product data (in a real app, this would come from an API)
-const sampleProducts = [
-  {
-    id: 1,
-    name: "Handwoven Ceramic Bowl",
-    artisan: "Maria Rodriguez",
-    price: 45,
-    originalPrice: 60,
-    rating: 4.8,
-    reviews: 23,
-    images: ["/api/placeholder/600/600", "/api/placeholder/600/600", "/api/placeholder/600/600"],
-    category: "pottery",
-    onSale: true,
-    description: "A beautiful handwoven ceramic bowl perfect for serving or as a decorative piece. Each piece is individually crafted using traditional techniques passed down through generations.",
-    materials: ["Ceramic", "Natural Glaze"],
-    dimensions: "8\" diameter x 3\" height",
-    careInstructions: "Hand wash only. Not microwave safe.",
-    story: "Maria Rodriguez has been crafting pottery for over 20 years in her studio in Oaxaca, Mexico. Each piece reflects her deep connection to traditional Mexican ceramics while incorporating modern design elements."
-  }
-];
+import { PRODUCTS, getProductById } from '@/data/products';
 
 // Sample reviews data
 const sampleReviews = [
+  // Reviews for Ceramic Bowl (ID 1)
   {
     id: "1",
     productId: 1,
@@ -70,6 +51,61 @@ const sampleReviews = [
     date: new Date("2024-01-05"),
     verified: true,
     helpful: 5
+  },
+  // Reviews for Macrame Wall Hanging (ID 2)
+  {
+    id: "4",
+    productId: 2,
+    userId: "user4",
+    userName: "Jennifer Smith",
+    rating: 5,
+    title: "Stunning wall art!",
+    content: "Sarah's macrame work is absolutely gorgeous. It's the perfect size for my living room and the quality is outstanding.",
+    photos: [],
+    date: new Date("2024-01-20"),
+    verified: true,
+    helpful: 15
+  },
+  {
+    id: "5",
+    productId: 2,
+    userId: "user5",
+    userName: "David Wilson",
+    rating: 4,
+    title: "Great craftsmanship",
+    content: "Beautiful piece that adds a boho touch to our bedroom. Well-made and shipped carefully.",
+    photos: [],
+    date: new Date("2024-01-12"),
+    verified: true,
+    helpful: 9
+  },
+  // Reviews for Glass Art Vase (ID 5)
+  {
+    id: "6",
+    productId: 5,
+    userId: "user6",
+    userName: "Amanda Taylor",
+    rating: 5,
+    title: "Gorgeous vase!",
+    content: "Emma's glass work is amazing. The colors are even more beautiful in person. Perfect for my dining room table.",
+    photos: [],
+    date: new Date("2024-01-18"),
+    verified: true,
+    helpful: 11
+  },
+  // Reviews for Knitted Wool Scarf (ID 6)
+  {
+    id: "7",
+    productId: 6,
+    userId: "user7",
+    userName: "Lisa Brown",
+    rating: 4,
+    title: "So soft and warm",
+    content: "Beautiful scarf with traditional patterns. The wool quality is excellent and it's very comfortable to wear.",
+    photos: [],
+    date: new Date("2024-01-14"),
+    verified: true,
+    helpful: 7
   }
 ];
 
@@ -78,8 +114,8 @@ export default function ProductDetailPage() {
   const productId = params?.id ? parseInt(params.id as string) : 1;
   const { addItem } = useCartActions();
   
-  // In a real app, you'd fetch this data based on the ID
-  const product = sampleProducts.find(p => p.id === productId) || sampleProducts[0];
+  // Get product from centralized data source
+  const product = getProductById(productId) || PRODUCTS[0];
   const productReviews = sampleReviews.filter(review => review.productId === product.id);
 
   return (
@@ -102,18 +138,40 @@ export default function ProductDetailPage() {
           {/* Product Images */}
           <div className="space-y-4">
             <Card className="overflow-hidden">
-              <div 
-                className="w-full h-96 bg-gradient-to-br from-gray-100 to-gray-200 bg-cover bg-center"
-                style={{ backgroundImage: `url(${product.images[0]})` }}
-              />
+              <div className="relative w-full h-96 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+                <img
+                  src={product.images[0]}
+                  alt={`${product.name} by ${product.artisan}`}
+                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                  onLoad={() => {
+                    console.log(`✅ Main image loaded successfully: ${product.name} - ${product.images[0]}`);
+                  }}
+                  onError={(e) => {
+                    console.log(`❌ Main image failed to load: ${product.name} - ${product.images[0]}`);
+                    // Fallback to gradient background if image fails
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              </div>
             </Card>
             <div className="grid grid-cols-3 gap-4">
               {product.images.slice(1).map((image, idx) => (
                 <Card key={idx} className="overflow-hidden cursor-pointer hover:shadow-md transition-shadow">
-                  <div 
-                    className="w-full h-24 bg-gradient-to-br from-gray-100 to-gray-200 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${image})` }}
-                  />
+                  <div className="relative w-full h-24 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+                    <img
+                      src={image}
+                      alt={`${product.name} view ${idx + 2}`}
+                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                      onLoad={() => {
+                        console.log(`✅ Thumbnail ${idx + 2} loaded successfully: ${product.name} - ${image}`);
+                      }}
+                      onError={(e) => {
+                        console.log(`❌ Thumbnail ${idx + 2} failed to load: ${product.name} - ${image}`);
+                        // Fallback to gradient background if image fails
+                        (e.target as HTMLImageElement).style.display = 'none';
+                      }}
+                    />
+                  </div>
                 </Card>
               ))}
             </div>

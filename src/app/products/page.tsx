@@ -8,22 +8,7 @@ import { SelectDropdown } from '@/components/ui/Dropdown';
 import Link from 'next/link';
 import { useCartActions } from '@/contexts/CartContext';
 import WishlistIcon from '@/components/wishlist/WishlistIcon';
-
-interface Product {
-  id: number;
-  name: string;
-  artisan: string;
-  price: number;
-  originalPrice?: number;
-  rating: number;
-  reviews: number;
-  image: string;
-  category: string;
-  onSale?: boolean;
-  featured?: boolean;
-  description: string;
-  materials: string[];
-}
+import { PRODUCTS, type Product } from '@/data/products';
 
 function ProductsContent() {
   const searchParams = useSearchParams();
@@ -41,114 +26,8 @@ function ProductsContent() {
     }
   }, [searchParams]);
 
-  // Expanded product data following team 13 patterns
-  const products: Product[] = [
-    {
-      id: 1,
-      name: "Handwoven Ceramic Bowl",
-      artisan: "Maria Rodriguez",
-      price: 45,
-      originalPrice: 60,
-      rating: 4.8,
-      reviews: 23,
-      image: "/api/placeholder/400/400",
-      category: "pottery",
-      onSale: true,
-      featured: true,
-      description: "A beautiful handwoven ceramic bowl perfect for serving or as a decorative piece.",
-      materials: ["Ceramic", "Natural Glaze"]
-    },
-    {
-      id: 2,
-      name: "Macrame Wall Hanging",
-      artisan: "Sarah Chen",
-      price: 78,
-      rating: 4.9,
-      reviews: 31,
-      image: "/api/placeholder/400/400",
-      category: "textiles",
-      featured: true,
-      description: "Intricate macrame wall hanging that adds bohemian charm to any space.",
-      materials: ["Cotton Cord", "Wooden Ring"]
-    },
-    {
-      id: 3,
-      name: "Wooden Cutting Board",
-      artisan: "James Wilson",
-      price: 35,
-      rating: 4.7,
-      reviews: 18,
-      image: "/api/placeholder/400/400",
-      category: "woodwork",
-      description: "Durable hardwood cutting board with natural grain patterns.",
-      materials: ["Maple Wood", "Food-Safe Finish"]
-    },
-    {
-      id: 4,
-      name: "Silver Wire Wrapped Pendant",
-      artisan: "Elena Popov",
-      price: 52,
-      originalPrice: 68,
-      rating: 5.0,
-      reviews: 12,
-      image: "/api/placeholder/400/400",
-      category: "jewelry",
-      onSale: true,
-      description: "Elegant silver wire wrapped pendant with natural stone centerpiece.",
-      materials: ["Sterling Silver", "Natural Stone"]
-    },
-    {
-      id: 5,
-      name: "Quilted Table Runner",
-      artisan: "Rose Thompson",
-      price: 89,
-      rating: 4.6,
-      reviews: 15,
-      image: "/api/placeholder/400/400",
-      category: "textiles",
-      description: "Beautifully quilted table runner with geometric patterns.",
-      materials: ["Cotton Fabric", "Cotton Batting"]
-    },
-    {
-      id: 6,
-      name: "Hand-Carved Wooden Spoons Set",
-      artisan: "Michael Oak",
-      price: 28,
-      rating: 4.8,
-      reviews: 42,
-      image: "/api/placeholder/400/400",
-      category: "woodwork",
-      description: "Set of three hand-carved wooden spoons for cooking and serving.",
-      materials: ["Cherry Wood", "Natural Oil Finish"]
-    },
-    {
-      id: 7,
-      name: "Ceramic Planter with Drainage",
-      artisan: "Lisa Park",
-      price: 65,
-      originalPrice: 85,
-      rating: 4.4,
-      reviews: 28,
-      image: "/api/placeholder/400/400",
-      category: "pottery",
-      onSale: true,
-      description: "Modern ceramic planter with built-in drainage system.",
-      materials: ["Stoneware Clay", "Matte Glaze"]
-    },
-    {
-      id: 8,
-      name: "Handmade Leather Wallet",
-      artisan: "David Craft",
-      price: 95,
-      rating: 4.9,
-      reviews: 37,
-      image: "/api/placeholder/400/400",
-      category: "leather",
-      featured: true,
-      description: "Premium handcrafted leather wallet with multiple card slots.",
-      materials: ["Full Grain Leather", "Waxed Thread"]
-    }
-  ];
+  // Use centralized product data
+  const products = PRODUCTS;
 
   const categories = [
     { value: 'all', label: 'All Categories' },
@@ -156,6 +35,7 @@ function ProductsContent() {
     { value: 'textiles', label: 'Textiles & Fiber' },
     { value: 'woodwork', label: 'Woodworking' },
     { value: 'jewelry', label: 'Jewelry & Metalwork' },
+    { value: 'metalwork', label: 'Metalwork' },
     { value: 'leather', label: 'Leather Goods' }
   ];
 
@@ -281,10 +161,21 @@ function ProductsContent() {
               <Card key={product.id} className="group cursor-pointer hover:shadow-xl transition-all duration-300">
                 <Link href={`/products/${product.id}`}>
                   <div className="relative overflow-hidden">
-                    <div 
-                      className="w-full h-64 bg-gradient-to-br from-gray-100 to-gray-200 bg-cover bg-center transition-transform duration-300 group-hover:scale-110"
-                      style={{ backgroundImage: `url(${product.image})` }}
-                    />
+                    <div className="w-full h-64 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+                      <img 
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                        onLoad={() => {
+                          console.log(`✅ Image loaded successfully: ${product.name} - ${product.image}`);
+                        }}
+                        onError={(e) => {
+                          console.log(`❌ Image failed to load: ${product.name} - ${product.image}`);
+                          // Fallback to gradient background if image fails
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                      />
+                    </div>
                     {product.onSale && (
                       <div className="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
                         Sale
