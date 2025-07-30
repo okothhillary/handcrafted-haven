@@ -29,12 +29,22 @@ This comprehensive plan outlines the database integration strategy for the Handc
 ### **1.1 Environment Setup**
 ```bash
 # Required Environment Variables
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/handcrafted-haven
-NEXTAUTH_SECRET=your-secret-key
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/handcrafted-haven
+NEXTAUTH_SECRET=<your-secure-secret-key>
 NEXTAUTH_URL=http://localhost:3000
-JWT_SECRET=your-jwt-secret
+JWT_SECRET=<your-jwt-secret>
 BCRYPT_SALT_ROUNDS=12
 ```
+
+⚠️ **Security Note**: Replace all placeholder values (`<...>`) with actual credentials. Never commit real credentials to version control. Use environment variables and secure secret management systems.
+
+### **1.1.1 Secret Management Best Practices**
+- [ ] Use `.env.local` for local development (add to `.gitignore`)
+- [ ] Use platform environment variables for production (Vercel, Netlify, etc.)
+- [ ] Generate strong, unique secrets using tools like `openssl rand -base64 32`
+- [ ] Rotate credentials regularly
+- [ ] Use different credentials for development, staging, and production
+- [ ] Consider using services like HashiCorp Vault or AWS Secrets Manager for production
 
 ### **1.2 Database Connection Enhancement**
 - [ ] Remove demo mode from `connectDB.ts`
@@ -325,12 +335,12 @@ const AnalyticsSchema = new mongoose.Schema({
 ### **7.2 Environment Configuration**
 ```env
 # Production Environment Variables
-MONGODB_URI=mongodb+srv://prod-user:password@prod-cluster.mongodb.net/handcrafted-haven
+MONGODB_URI=mongodb+srv://<prod-username>:<prod-password>@<prod-cluster>.mongodb.net/handcrafted-haven
 NODE_ENV=production
-NEXTAUTH_SECRET=production-secret-key
-REDIS_URL=redis://redis-server:6379
-EMAIL_SERVICE_API_KEY=your-email-service-key
-STRIPE_SECRET_KEY=your-stripe-secret-key
+NEXTAUTH_SECRET=<production-secret-key>
+REDIS_URL=redis://<redis-server>:6379
+EMAIL_SERVICE_API_KEY=<your-email-service-key>
+STRIPE_SECRET_KEY=<your-stripe-secret-key>
 ```
 
 ### **7.3 Testing Strategy**
