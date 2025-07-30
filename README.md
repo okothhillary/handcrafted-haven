@@ -6,12 +6,14 @@ A modern e-commerce platform showcasing handcrafted artisan products from around
 
 🚀 **Production Site**: [handcrafted-haven-git-individual-olwal-olwalgeorges-projects.vercel.app](https://handcrafted-haven-git-individual-olwal-olwalgeorges-projects.vercel.app)
 
+*Updated with latest fixes and real artisan images*
+
 ## 👥 Team Members
 
-- **George Olwal** - Full-stack Developer
-- **Hillary Okoth** - Frontend Developer  
-- **Emmanuel Ekenedo** - Backend Developer
-- **Malcolm Nigel** - UI/UX Designer
+- **George Olwal** - Frontend and deployment
+- **Hillary Okoth** - Database Design and intergration
+- **Emmanuel Ekenedo** - Authentication and Authorization
+- **Malcolm Nigel** - Validation and Test
 
 ## ✨ Features
 
