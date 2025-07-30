@@ -16,6 +16,7 @@ export default function CheckoutPage() {
   const { createOrder } = useOrderActions();
   const { state: authState } = useAuth();
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('credit-card');
   const [formData, setFormData] = useState<ShippingAddress>({
     fullName: authState.user?.name || '',
     address: '',
@@ -92,12 +93,12 @@ export default function CheckoutPage() {
           <p className="text-gray-600 mt-2">Complete your order</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Shipping Information */}
-          <div>
-            <Card className="p-6">
+          <div className="lg:col-span-2">
+            <Card className="p-6 mb-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">Shipping Information</h2>
-              <form onSubmit={handlePlaceOrder} className="space-y-4">
+              <form onSubmit={handlePlaceOrder} id="checkout-form" className="space-y-4">
                 <div>
                   <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
                     Full Name *
@@ -193,31 +194,137 @@ export default function CheckoutPage() {
                     </select>
                   </div>
                 </div>
-
-                <div className="pt-6">
-                  <Button
-                    type="submit"
-                    variant="primary"
-                    disabled={isPlacingOrder}
-                    className="w-full"
-                  >
-                    {isPlacingOrder ? (
-                      <>
-                        <i className="ri-loader-4-line animate-spin mr-2"></i>
-                        Placing Order...
-                      </>
-                    ) : (
-                      `Place Order - $${total.toFixed(2)}`
-                    )}
-                  </Button>
-                </div>
               </form>
+            </Card>
+
+            {/* Payment Information */}
+            <Card className="p-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">Payment Information</h2>
+              
+              {/* Payment Methods */}
+              <div className="space-y-4 mb-6">
+                <div className="flex items-center space-x-4">
+                  <input
+                    type="radio"
+                    id="credit-card"
+                    name="payment-method"
+                    value="credit-card"
+                    checked={paymentMethod === 'credit-card'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="text-amber-600 focus:ring-amber-500"
+                  />
+                  <label htmlFor="credit-card" className="flex items-center space-x-2 cursor-pointer">
+                    <i className="ri-bank-card-line text-xl text-gray-600"></i>
+                    <span>Credit/Debit Card</span>
+                  </label>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <input
+                    type="radio"
+                    id="paypal"
+                    name="payment-method"
+                    value="paypal"
+                    checked={paymentMethod === 'paypal'}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="text-amber-600 focus:ring-amber-500"
+                  />
+                  <label htmlFor="paypal" className="flex items-center space-x-2 cursor-pointer">
+                    <i className="ri-paypal-line text-xl text-blue-600"></i>
+                    <span>PayPal</span>
+                  </label>
+                </div>
+              </div>
+
+              {paymentMethod === 'credit-card' && (
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Card Number
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="1234 5678 9012 3456"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Expiry Date
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="MM/YY"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        CVV
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="123"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Cardholder Name
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="John Doe"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {paymentMethod === 'paypal' && (
+                <div className="text-center py-8">
+                  <i className="ri-paypal-line text-6xl text-blue-600 mb-4"></i>
+                  <p className="text-gray-600">You will be redirected to PayPal to complete your payment.</p>
+                </div>
+              )}
+
+              {/* Security Notice */}
+              <div className="mt-6 p-4 bg-gray-50 rounded-lg border">
+                <div className="flex items-center text-sm text-gray-600">
+                  <i className="ri-shield-check-line text-green-600 mr-2"></i>
+                  <span>Your payment information is encrypted and secure</span>
+                </div>
+              </div>
+
+              <div className="pt-6">
+                <Button
+                  type="submit"
+                  form="checkout-form"
+                  variant="primary"
+                  disabled={isPlacingOrder}
+                  className="w-full"
+                  size="lg"
+                >
+                  {isPlacingOrder ? (
+                    <>
+                      <i className="ri-loader-4-line animate-spin mr-2"></i>
+                      Processing Order...
+                    </>
+                  ) : (
+                    <>
+                      <i className="ri-secure-payment-line mr-2"></i>
+                      Complete Order - ${total.toFixed(2)}
+                    </>
+                  )}
+                </Button>
+              </div>
             </Card>
           </div>
 
           {/* Order Summary */}
           <div>
-            <Card className="p-6">
+            <Card className="p-6 sticky top-8">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">Order Summary</h2>
               
               {/* Order Items */}

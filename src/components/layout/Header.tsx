@@ -7,12 +7,14 @@ import { CartIcon } from '@/components/ui/Cart';
 import UserMenu from '@/components/auth/UserMenu';
 import SearchBar from '@/components/search/SearchBar';
 import { useWishlist } from '@/contexts/WishlistContext';
+import { useCart } from '@/contexts/CartContext';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const { getWishlistCount } = useWishlist();
+  const { state: cartState } = useCart();
 
   const handleWishlistClick = () => {
     router.push('/wishlist');
@@ -115,7 +117,7 @@ export default function Header() {
                 Wishlist ({getWishlistCount()})
               </Link>
               <Link href="/cart" className="text-gray-700 hover:text-amber-700 transition-colors font-medium">
-                Shopping Cart (0)
+                Shopping Cart ({cartState.itemCount})
               </Link>
               <div className="pt-2">
                 <UserMenu />

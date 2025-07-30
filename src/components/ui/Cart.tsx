@@ -20,12 +20,8 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
   const { state: authState } = useAuth();
 
   const handleCheckout = () => {
-    if (!authState.user) {
-      alert('Please log in to continue to checkout');
-      onClose();
-      return;
-    }
-    
+    // TODO: Add authentication check when user management is implemented
+    // Allow guest checkout for now
     onClose();
     router.push('/checkout');
   };
@@ -155,11 +151,12 @@ export function CartIcon() {
     <>
       <button
         onClick={() => setIsCartOpen(true)}
-        className="relative p-2 text-gray-600 hover:text-gray-900 transition-colors"
+        className="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-amber-700 transition-colors cursor-pointer relative"
+        aria-label="View shopping cart"
       >
         <i className="ri-shopping-cart-line text-xl"></i>
         {state.itemCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+          <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
             {state.itemCount > 99 ? '99+' : state.itemCount}
           </span>
         )}
