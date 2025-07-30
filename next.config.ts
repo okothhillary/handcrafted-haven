@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
   },
 
   // Security headers
@@ -40,23 +41,18 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Webpack optimization
-  webpack: (config, { dev, isServer }) => {
-    // Production optimizations
-    if (!dev && !isServer) {
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-          },
-        },
-      };
-    }
+  // External packages for server components
+  serverExternalPackages: ['@prisma/client'],
 
-    return config;
+  // Turbopack configuration (stable in Next.js 15+)
+  turbopack: {
+    rules: {
+      // Handle SVG files
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
+      },
+    },
   },
 
   // Experimental features for better performance
