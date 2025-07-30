@@ -3,10 +3,19 @@ import { User } from "@/models/user";
 import { userSchema } from "@/validation/user.schema";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import { NextRequest } from "next/server";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   await connectDB();
-  const users = await User.find().select("-password"); // Exclude password
+
+  const role = req.nextUrl.searchParams.get("role");
+
+  const filter: any = {};
+  if (role) {
+    filter.role = role;
+  }
+
+  const users = await User.find(filter).select("-password"); // Exclude password
   return NextResponse.json(users);
 }
 

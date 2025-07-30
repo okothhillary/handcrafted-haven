@@ -3,14 +3,15 @@ import { User } from "@/models/user";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { userSchema } from "@/validation/user.schema";
+import { isValidObjectId } from "mongoose";
+
+// Create an update schema with all fields optional
+const updateUserSchema = userSchema.partial();
 
 // Helper function to extract params safely
 async function getParams(params: Promise<{ id: string }>) {
   return params;
 }
-
-// Create an update schema with all fields optional
-const updateUserSchema = userSchema.partial();
 
 // GET /api/users/:id
 export async function GET(
@@ -19,15 +20,26 @@ export async function GET(
 ) {
   try {
     const { id } = await getParams(params);
+
+    if (!isValidObjectId(id)) {
+      return NextResponse.json({ message: "Invalid user ID" }, { status: 400 });
+    }
+
     await connectDB();
+
     const user = await User.findById(id).select("-password");
+
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
+
     return NextResponse.json(user);
   } catch (error) {
     return NextResponse.json(
-      { message: "Failed to fetch user" },
+      {
+        message: "Failed to fetch user",
+        error: error instanceof Error ? error.message : String(error),
+      },
       { status: 500 }
     );
   }
@@ -40,10 +52,14 @@ export async function PUT(
 ) {
   try {
     const { id } = await getParams(params);
+
+    if (!isValidObjectId(id)) {
+      return NextResponse.json({ message: "Invalid user ID" }, { status: 400 });
+    }
+
     await connectDB();
     const body = await req.json();
 
-    // Validate input
     const parseResult = updateUserSchema.safeParse(body);
     if (!parseResult.success) {
       return NextResponse.json(
@@ -54,7 +70,7 @@ export async function PUT(
 
     const data = parseResult.data;
 
-    // Optional: If password is being updated, hash it
+    // Hash password if it's being updated
     if (data.password) {
       data.password = await bcrypt.hash(data.password, 10);
     }
@@ -71,7 +87,10 @@ export async function PUT(
     return NextResponse.json(updatedUser);
   } catch (error) {
     return NextResponse.json(
-      { message: "Failed to update user" },
+      {
+        message: "Failed to update user",
+        error: error instanceof Error ? error.message : String(error),
+      },
       { status: 500 }
     );
   }
@@ -84,15 +103,25 @@ export async function DELETE(
 ) {
   try {
     const { id } = await getParams(params);
+
+    if (!isValidObjectId(id)) {
+      return NextResponse.json({ message: "Invalid user ID" }, { status: 400 });
+    }
+
     await connectDB();
-    const deleted = await User.findByIdAndDelete(id);
-    if (!deleted) {
+    const deletedUser = await User.findByIdAndDelete(id);
+
+    if (!deletedUser) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
-    return NextResponse.json({ message: "User deleted" });
+
+    return NextResponse.json({ message: "User deleted successfully" });
   } catch (error) {
     return NextResponse.json(
-      { message: "Failed to delete user" },
+      {
+        message: "Failed to delete user",
+        error: error instanceof Error ? error.message : String(error),
+      },
       { status: 500 }
     );
   }
