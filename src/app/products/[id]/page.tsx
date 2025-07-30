@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useCartActions } from '@/contexts/CartContext';
 import WishlistIcon from '@/components/wishlist/WishlistIcon';
 import WishlistButton from '@/components/wishlist/WishlistButton';
+import { ReviewForm, ReviewDisplay, ReviewSummary } from '@/components/ui/Reviews';
 
 // Sample product data (in a real app, this would come from an API)
 const sampleProducts = [
@@ -29,6 +30,49 @@ const sampleProducts = [
   }
 ];
 
+// Sample reviews data
+const sampleReviews = [
+  {
+    id: "1",
+    productId: 1,
+    userId: "user1",
+    userName: "Sarah Johnson",
+    rating: 5,
+    title: "Absolutely Beautiful!",
+    content: "This bowl exceeded my expectations. The craftsmanship is incredible and it's become the centerpiece of my dining table. Maria's work is truly exceptional.",
+    photos: [],
+    date: new Date("2024-01-15"),
+    verified: true,
+    helpful: 12
+  },
+  {
+    id: "2",
+    productId: 1,
+    userId: "user2",
+    userName: "Michael Chen",
+    rating: 5,
+    title: "Perfect for serving",
+    content: "Great size for salads and pasta. The natural glaze has such a lovely finish. Fast shipping and careful packaging too.",
+    photos: [],
+    date: new Date("2024-01-10"),
+    verified: true,
+    helpful: 8
+  },
+  {
+    id: "3",
+    productId: 1,
+    userId: "user3",
+    userName: "Elena Vasquez",
+    rating: 4,
+    title: "Beautiful but smaller than expected",
+    content: "Love the artistry and quality, though it's a bit smaller than I imagined. Still very happy with the purchase!",
+    photos: [],
+    date: new Date("2024-01-05"),
+    verified: true,
+    helpful: 5
+  }
+];
+
 export default function ProductDetailPage() {
   const params = useParams();
   const productId = params?.id ? parseInt(params.id as string) : 1;
@@ -36,6 +80,7 @@ export default function ProductDetailPage() {
   
   // In a real app, you'd fetch this data based on the ID
   const product = sampleProducts.find(p => p.id === productId) || sampleProducts[0];
+  const productReviews = sampleReviews.filter(review => review.productId === product.id);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -190,6 +235,76 @@ export default function ProductDetailPage() {
               <Link href="/products">
                 <Button variant="secondary">Browse All Products</Button>
               </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Reviews Section */}
+        <section className="mt-16">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Review Summary */}
+            <div className="lg:col-span-1">
+              <Card className="p-6 sticky top-6">
+                <ReviewSummary
+                  reviews={productReviews}
+                  averageRating={product.rating}
+                  totalReviews={productReviews.length}
+                />
+                
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Write a Review</h3>
+                  <ReviewForm
+                    productId={product.id}
+                    onSubmit={(review) => {
+                      console.log('Review submitted:', review);
+                      // In a real app, this would send to an API
+                    }}
+                    onCancel={() => {
+                      console.log('Review cancelled');
+                      // In a real app, this would hide the form
+                    }}
+                  />
+                </div>
+              </Card>
+            </div>
+
+            {/* Reviews List */}
+            <div className="lg:col-span-2 space-y-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Customer Reviews ({productReviews.length})
+                </h2>
+                <div className="flex items-center space-x-4">
+                  <select className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:border-transparent">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="highest">Highest Rated</option>
+                    <option value="lowest">Lowest Rated</option>
+                    <option value="helpful">Most Helpful</option>
+                  </select>
+                </div>
+              </div>
+
+              {productReviews.length > 0 ? (
+                <div className="space-y-6">
+                  {productReviews.map((review) => (
+                    <ReviewDisplay
+                      key={review.id}
+                      review={review}
+                      onHelpful={(reviewId: string) => console.log('Marked helpful:', reviewId)}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <Card className="p-12 text-center">
+                  <div className="text-gray-400 mb-4">
+                    <i className="ri-chat-3-line text-4xl"></i>
+                  </div>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">No reviews yet</h3>
+                  <p className="text-gray-600 mb-6">Be the first to share your thoughts about this product!</p>
+                  <Button>Write First Review</Button>
+                </Card>
+              )}
             </div>
           </div>
         </section>

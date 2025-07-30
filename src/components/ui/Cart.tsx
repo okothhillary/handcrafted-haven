@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useCart, useCartActions } from '@/contexts/CartContext';
+import { useAuth } from '@/contexts/AuthContext';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Modal from '@/components/ui/Modal';
@@ -12,12 +14,20 @@ interface CartModalProps {
 }
 
 export function CartModal({ isOpen, onClose }: CartModalProps) {
+  const router = useRouter();
   const { state } = useCart();
   const { updateQuantity, removeItem, clearCart } = useCartActions();
+  const { state: authState } = useAuth();
 
   const handleCheckout = () => {
-    // Implement checkout logic
-    alert('Checkout functionality coming soon!');
+    if (!authState.user) {
+      alert('Please log in to continue to checkout');
+      onClose();
+      return;
+    }
+    
+    onClose();
+    router.push('/checkout');
   };
 
   return (

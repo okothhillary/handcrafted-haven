@@ -7,6 +7,7 @@ import { CartProvider } from "@/contexts/CartContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
 import { SearchProvider } from "@/contexts/SearchContext";
+import { OrderProvider } from "@/contexts/OrderContext";
 
 const pacifico = Pacifico({
   weight: '400',
@@ -43,13 +44,15 @@ export default function RootLayout({
         <AuthProvider>
           <WishlistProvider>
             <CartProvider>
-              <SearchProvider>
-                <Header />
-                <main className="min-h-screen">
-                  {children}
-                </main>
-                <Footer />
-              </SearchProvider>
+              <OrderProvider>
+                <SearchProvider>
+                  <Header />
+                  <main className="min-h-screen">
+                    {children}
+                  </main>
+                  <Footer />
+                </SearchProvider>
+              </OrderProvider>
             </CartProvider>
           </WishlistProvider>
         </AuthProvider>
