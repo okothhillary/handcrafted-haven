@@ -6,14 +6,14 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const client = await clientPromise;
-    const db = client.db("handcrafted-haven");
+    const connection = await connectDB();
+    const db = connection.connection.db;
 
     const collections = await db.listCollections().toArray();
 
     res.status(200).json({
       message: "Connected successfully",
-      collections: collections.map((col) => col.name),
+      collections: collections.map((col: any) => col.name),
     });
   } catch (error) {
     res.status(500).json({ message: "Test endpoint failed", error });
