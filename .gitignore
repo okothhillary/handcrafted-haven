@@ -39,3 +39,27 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# exclude team 13 folder
+team 13/
+
+# exclude comparison documentation
+TEAM_13_COMPARISON.md
+
+# exclude documentation files (if needed)
+docs/INTEGRATION_GUIDE.md
+
+# exclude download scripts
+download_images.py
+download_additional_images.py
+download_missing_images.py
+fix_missing_images.py
+download_artisan_images.py
+download_team13_products.py
+download_additional_artisan_images.py
+download_specific_artisan_images.py
+download_team13_reddy_images.py
+verify_images.py
+
+# exclude all Python scripts used for image management
+*.py

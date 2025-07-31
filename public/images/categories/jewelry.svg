@@ -1,0 +1,15 @@
+<svg width="300" height="200" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="300" height="200" fill="#F8F5F0"/>
+  <circle cx="100" cy="80" r="15" fill="#E8E8E8" stroke="#8B5A3C" stroke-width="2"/>
+  <circle cx="100" cy="80" r="8" fill="#4A90E2"/>
+  <path d="M100 65 Q115 55 130 65" fill="none" stroke="#8B5A3C" stroke-width="2"/>
+  
+  <ellipse cx="180" cy="90" rx="20" ry="8" fill="#E8E8E8" stroke="#A0845C" stroke-width="2"/>
+  <circle cx="180" cy="90" r="5" fill="#FF6B6B"/>
+  
+  <rect x="120" y="110" width="60" height="20" rx="10" fill="none" stroke="#8B5A3C" stroke-width="2"/>
+  <circle cx="140" cy="120" r="3" fill="#4A90E2"/>
+  <circle cx="160" cy="120" r="3" fill="#FF6B6B"/>
+  
+  <text x="150" y="180" text-anchor="middle" font-family="serif" font-size="16" fill="#8B5A3C">Jewelry & Metalwork</text>
+</svg>
