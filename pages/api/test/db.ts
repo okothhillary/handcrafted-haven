@@ -1,21 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import clientPromise from "@/app/lib/mongodb";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
-    const client = await clientPromise;
-    const db = client.db("handcrafted-haven");
-
-    const collections = await db.listCollections().toArray();
-
+    // Mock response for demo purposes (no database connection)
     res.status(200).json({
-      message: "Connected successfully",
-      collections: collections.map((col) => col.name),
+      message: "Demo mode - No database connection",
+      collections: ["users", "products", "orders", "carts"],
+      note: "This is a mock response for demonstration purposes"
     });
   } catch (error) {
-    res.status(500).json({ message: "Database connection failed", error });
+    res.status(500).json({ message: "Test endpoint failed", error });
   }
 }
