@@ -7,13 +7,25 @@ if (!MONGODB_URI) {
   console.warn("MONGODB_URI not provided - running in demo mode without database");
 }
 
-let cached = (global as any).mongoose;
+type MongooseCache = {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+};
+
+declare global {
+  // Extend NodeJS.Global to include mongoose cache
+
+  var mongoose: MongooseCache | undefined;
+}
+
+let cached: MongooseCache = global.mongoose ?? { conn: null, promise: null };
 
 if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null };
+  cached = global.mongoose = { conn: null, promise: null };
 }
 
 export async function connectDB() {
+
   // Skip database connection for demo deployment
   if (!MONGODB_URI) {
     console.log("Running in demo mode - no database connection");
@@ -21,6 +33,10 @@ export async function connectDB() {
   }
   
   if (cached.conn) return cached.conn;
+
+
+  
+
 
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URI, {
