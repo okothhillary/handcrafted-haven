@@ -1,40 +1,31 @@
 // users/route.ts
-import { connectDB } from "@/utils/connectDB";
-import { User } from "@/models/user";
 import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
+import fs from 'fs';
+import path from 'path';
 
 export async function GET() {
-  await connectDB();
-  const users = await User.find().select("-password"); // Exclude password
-  return NextResponse.json(users);
+  try {
+    const filePath = path.join(process.cwd(), 'src', 'data', 'users.json');
+    const fileContents = fs.readFileSync(filePath, 'utf8');
+    const users = JSON.parse(fileContents);
+    // Exclude passwords for security
+    const safeUsers = users.map((user: any) => {
+      const { password, ...safeUser } = user;
+      return safeUser;
+    });
+    return NextResponse.json(safeUsers);
+  } catch (error) {
+    console.error('Error reading users:', error);
+    return NextResponse.json(
+      { message: "Failed to fetch users" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(req: Request) {
-  await connectDB();
-  const { name, email, password } = await req.json();
-
-  // Check if user exists
-  const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    return NextResponse.json(
-      { message: "User already exists" },
-      { status: 409 }
-    );
-  }
-
-  // Hash password
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  // Create user
-  const newUser = await User.create({
-    name,
-    email,
-    password: hashedPassword,
-  });
-
-  // Exclude password in response
-  const { password: _, ...userWithoutPassword } = newUser.toObject();
-
-  return NextResponse.json(userWithoutPassword, { status: 201 });
+  return NextResponse.json(
+    { message: "POST not implemented for JSON file storage" },
+    { status: 501 }
+  );
 }
