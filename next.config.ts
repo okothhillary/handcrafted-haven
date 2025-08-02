@@ -69,6 +69,56 @@ const nextConfig: NextConfig = {
     // Only ignore during builds for now - should be fixed for production  
     ignoreBuildErrors: true,
   },
+
+  // Webpack configuration to optimize bundle size
+  webpack: (config, { isServer }) => {
+    // Optimize SVG handling
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+
+    // Optimize large icon font files like Remixicon
+    config.module.rules.push({
+      test: /remixicon\.svg$/,
+      use: {
+        loader: 'url-loader',
+        options: {
+          limit: 8192, // Convert small files to base64
+          fallback: 'file-loader',
+          publicPath: '/_next/static/icons/',
+          outputPath: 'static/icons/',
+        },
+      },
+    });
+
+    // Reduce bundle size for large icon fonts
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+      };
+      
+      // Optimize bundle splitting for icons
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          ...config.optimization.splitChunks,
+          cacheGroups: {
+            ...config.optimization.splitChunks?.cacheGroups,
+            icons: {
+              test: /[\\/]node_modules[\\/](remixicon)[\\/]/,
+              name: 'icons',
+              chunks: 'all',
+              priority: 10,
+            },
+          },
+        },
+      };
+    }
+
+    return config;
+  },
 };
 
 export default nextConfig;

@@ -1,14 +1,14 @@
-
 'use client';
-
+ 
 import { useState, useEffect } from 'react';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCartActions } from '@/contexts/CartContext';
 import { useWishlistActions } from '@/contexts/WishlistContext';
 import SEO, { generatePageSEO } from '@/components/SEO/SEO';
-
+ 
 interface Product {
   id: number;
   name: string;
@@ -24,7 +24,7 @@ interface Product {
   stock: number;
   materials: string[];
 }
-
+ 
 interface Category {
   name: string;
   count: number;
@@ -32,7 +32,7 @@ interface Category {
   href: string;
   description: string;
 }
-
+ 
 export default function Home() {
   const { addItem } = useCartActions();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlistActions();
@@ -47,7 +47,7 @@ export default function Home() {
         // TODO: Replace with actual API call when database is integrated
         // const response = await fetch('/api/products?featured=true&limit=8');
         // const products = await response.json();
-        
+       
         // Mock data following Team 13 patterns with enhanced structure
         const mockProducts: Product[] = [
           {
@@ -161,19 +161,19 @@ export default function Home() {
             materials: ["Hardwood", "Hand Carved", "Natural Finish"]
           }
         ];
-        
+       
         setFeaturedProducts(mockProducts);
       } catch (error) {
         console.error('Failed to load featured products:', error);
       }
     };
-
+ 
     const loadCategories = async () => {
       try {
         // TODO: Replace with actual API call when database is integrated
         // const response = await fetch('/api/categories');
         // const categoriesData = await response.json();
-        
+       
         // Enhanced categories with dynamic counts (ready for database integration)
         const mockCategories: Category[] = [
           {
@@ -205,7 +205,7 @@ export default function Home() {
             description: "Handcrafted jewelry and metalwork with precious materials"
           }
         ];
-        
+       
         setCategories(mockCategories);
       } catch (error) {
         console.error('Failed to load categories:', error);
@@ -213,16 +213,16 @@ export default function Home() {
         setLoading(false);
       }
     };
-
+ 
     loadFeaturedProducts();
     loadCategories();
   }, []);
-
+ 
   // Handle newsletter subscription - Ready for backend integration
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setNewsletter(prev => ({ ...prev, loading: true, message: '' }));
-
+ 
     try {
       // TODO: Replace with actual API call when database is integrated
       // const response = await fetch('/api/newsletter', {
@@ -230,25 +230,25 @@ export default function Home() {
       //   headers: { 'Content-Type': 'application/json' },
       //   body: JSON.stringify({ email: newsletter.email })
       // });
-      
+     
       // Mock success response
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setNewsletter(prev => ({ 
-        ...prev, 
-        loading: false, 
+     
+      setNewsletter(prev => ({
+        ...prev,
+        loading: false,
         message: 'Thank you for subscribing! 🎉',
         email: ''
       }));
-    } catch (error) {
-      setNewsletter(prev => ({ 
-        ...prev, 
-        loading: false, 
-        message: 'Something went wrong. Please try again.' 
+    } catch {
+      setNewsletter(prev => ({
+        ...prev,
+        loading: false,
+        message: 'Something went wrong. Please try again.'
       }));
     }
   };
-
+ 
   // Handle wishlist toggle - Fully functional
   const handleWishlistToggle = (product: Product) => {
     const productId = product.id.toString();
@@ -268,7 +268,7 @@ export default function Home() {
       addToWishlist(wishlistItem);
     }
   };
-
+ 
   // Handle add to cart - Fully functional
   const handleAddToCart = (product: Product) => {
     const cartItem = {
@@ -281,20 +281,20 @@ export default function Home() {
     };
     addItem(cartItem);
   };
-
+ 
   // Generate star rating display
   const renderStars = (rating: number) => {
     return [...Array(5)].map((_, i) => (
       <i key={i} className={`ri-star-${i < Math.floor(rating) ? 'fill' : 'line'} text-sm`}></i>
     ));
   };
-
+ 
   return (
     <>
       <SEO {...generatePageSEO('home')} />
       <div className="min-h-screen bg-white">
       {/* Hero Section - Enhanced Team 13 Pattern */}
-      <section 
+      <section
         className="relative h-screen flex items-center justify-center bg-cover bg-center"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/hero/workshop-bg.jpg')`
@@ -322,7 +322,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+ 
       {/* Categories Section - Enhanced with loading states */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
@@ -332,7 +332,7 @@ export default function Home() {
               Explore our curated collection of handmade items across various crafts and traditions
             </p>
           </div>
-          
+         
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {[...Array(4)].map((_, index) => (
@@ -350,11 +350,11 @@ export default function Home() {
                   <div className="group cursor-pointer transform hover:scale-105 transition-all duration-300">
                     <Card className="overflow-hidden hover:shadow-xl transition-all duration-300">
                       <div className="relative h-48 overflow-hidden">
-                        <img 
-                          src={category.image} 
+                        <Image
+                          src={category.image}
                           alt={category.name}
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                          loading="lazy"
+                          fill
+                          className="object-cover transition-transform duration-300 group-hover:scale-110"
                         />
                         <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors"></div>
                       </div>
@@ -373,7 +373,7 @@ export default function Home() {
           )}
         </div>
       </section>
-
+ 
       {/* Featured Products - Production Ready with Full Functionality */}
       <section className="py-20 bg-gray-50 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
@@ -383,7 +383,7 @@ export default function Home() {
               Discover our handpicked selection of exceptional handmade items
             </p>
           </div>
-          
+         
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {[...Array(8)].map((_, index) => (
@@ -405,12 +405,14 @@ export default function Home() {
                 <Card key={product.id} className="group cursor-pointer hover:shadow-xl transition-all duration-300 bg-white">
                   <div className="relative overflow-hidden">
                     <Link href={`/products/${product.id}`}>
-                      <img 
-                        src={product.image} 
-                        alt={product.name}
-                        className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110"
-                        loading="lazy"
-                      />
+                      <div className="relative h-64">
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          fill
+                          className="object-cover transition-transform duration-300 group-hover:scale-110"
+                        />
+                      </div>
                     </Link>
                     {product.onSale && (
                       <div className="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -422,18 +424,18 @@ export default function Home() {
                         Only {product.stock} left
                       </div>
                     )}
-                    <button 
+                    <button
                       onClick={() => handleWishlistToggle(product)}
                       className={`absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full transition-all duration-200 ${
-                        isInWishlist(product.id.toString()) 
-                          ? 'bg-red-500 text-white' 
+                        isInWishlist(product.id.toString())
+                          ? 'bg-red-500 text-white'
                           : 'bg-white/90 text-gray-600 hover:bg-white hover:text-red-500'
                       }`}
                     >
                       <i className={`ri-heart-${isInWishlist(product.id.toString()) ? 'fill' : 'line'}`}></i>
                     </button>
                   </div>
-                  
+                 
                   <div className="p-6">
                     <Link href={`/products/${product.id}`}>
                       <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary transition-colors">
@@ -445,14 +447,14 @@ export default function Home() {
                         by {product.artisan}
                       </p>
                     </Link>
-                    
+                   
                     <div className="flex items-center mb-3">
                       <div className="flex text-amber-400 mr-2">
                         {renderStars(product.rating)}
                       </div>
                       <span className="text-sm text-gray-600">({product.reviews})</span>
                     </div>
-                    
+                   
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center space-x-2">
                         <span className="text-2xl font-bold text-gray-900">${product.price}</span>
@@ -461,10 +463,10 @@ export default function Home() {
                         )}
                       </div>
                     </div>
-
+ 
                     <div className="flex gap-2">
-                      <Button 
-                        size="sm" 
+                      <Button
+                        size="sm"
                         className="flex-1 text-sm"
                         onClick={() => handleAddToCart(product)}
                         disabled={product.stock === 0}
@@ -472,20 +474,20 @@ export default function Home() {
                         {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
                       </Button>
                       <Link href={`/products/${product.id}`} className="flex-1">
-                        <Button 
-                          variant="secondary" 
-                          size="sm" 
+                        <Button
+                          variant="secondary"
+                          size="sm"
                           className="w-full text-sm"
                         >
                           View Details
                         </Button>
                       </Link>
                     </div>
-
+ 
                     {/* Materials/Tags */}
                     <div className="mt-3 flex flex-wrap gap-1">
                       {product.materials.slice(0, 2).map((material, index) => (
-                        <span 
+                        <span
                           key={index}
                           className="inline-block bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded"
                         >
@@ -498,7 +500,7 @@ export default function Home() {
               ))}
             </div>
           )}
-          
+         
           <div className="text-center mt-12">
             <Link href="/products">
               <Button variant="secondary" size="lg" className="px-8 py-4 text-lg">
@@ -508,17 +510,17 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+ 
       {/* Why Choose Us - Following team 13 value proposition patterns */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">Why Choose Handcrafted Haven</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              We're more than just a marketplace - we're a community supporting artisans and sustainable craftsmanship
+              We&apos;re more than just a marketplace - we&apos;re a community supporting artisans and sustainable craftsmanship
             </p>
           </div>
-          
+         
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div className="text-center">
               <div className="w-16 h-16 flex items-center justify-center bg-amber-100 text-amber-600 rounded-full mx-auto mb-6">
@@ -529,7 +531,7 @@ export default function Home() {
                 Every item is genuinely handcrafted by skilled artisans, ensuring uniqueness and quality in every piece.
               </p>
             </div>
-            
+           
             <div className="text-center">
               <div className="w-16 h-16 flex items-center justify-center bg-amber-100 text-amber-600 rounded-full mx-auto mb-6">
                 <i className="ri-earth-line text-2xl"></i>
@@ -539,7 +541,7 @@ export default function Home() {
                 Support eco-friendly practices and reduce environmental impact through conscious consumption of handmade goods.
               </p>
             </div>
-            
+           
             <div className="text-center">
               <div className="w-16 h-16 flex items-center justify-center bg-amber-100 text-amber-600 rounded-full mx-auto mb-6">
                 <i className="ri-community-line text-2xl"></i>
@@ -552,7 +554,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+ 
       {/* Newsletter Section - Production Ready with Form Handling */}
       <section className="py-20 bg-amber-50 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
@@ -560,10 +562,10 @@ export default function Home() {
           <p className="text-xl text-gray-600 mb-8">
             Get updates on new artisans, featured products, and exclusive offers
           </p>
-          
+         
           <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
-            <input 
-              type="email" 
+            <input
+              type="email"
               value={newsletter.email}
               onChange={(e) => setNewsletter(prev => ({ ...prev, email: e.target.value }))}
               placeholder="Enter your email address"
@@ -571,19 +573,19 @@ export default function Home() {
               required
               disabled={newsletter.loading}
             />
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={newsletter.loading}
               className="px-8 py-4 rounded-full whitespace-nowrap bg-amber-600 hover:bg-amber-700"
             >
               {newsletter.loading ? 'Subscribing...' : 'Subscribe'}
             </Button>
           </form>
-          
+         
           {newsletter.message && (
             <div className={`mt-4 p-3 rounded-lg ${
-              newsletter.message.includes('Thank you') 
-                ? 'bg-green-100 text-green-800' 
+              newsletter.message.includes('Thank you')
+                ? 'bg-green-100 text-green-800'
                 : 'bg-red-100 text-red-800'
             }`}>
               {newsletter.message}
@@ -591,7 +593,7 @@ export default function Home() {
           )}
         </div>
       </section>
-
+ 
       {/* Production Status Section */}
       <section className="py-16 bg-gradient-to-r from-green-50 to-emerald-50 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
@@ -599,7 +601,7 @@ export default function Home() {
             <h3 className="text-2xl font-semibold text-gray-900 mb-4">
               🚀 Production-Ready Homepage Complete
             </h3>
-            
+           
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
                 <h4 className="font-medium text-green-600 mb-2">✅ Enhanced Features</h4>
@@ -611,7 +613,7 @@ export default function Home() {
                   <li>• SEO optimization & accessibility</li>
                 </ul>
               </div>
-              
+             
               <div>
                 <h4 className="font-medium text-green-600 mb-2">✅ Database Ready</h4>
                 <ul className="text-sm text-gray-600 space-y-1">
@@ -623,7 +625,7 @@ export default function Home() {
                 </ul>
               </div>
             </div>
-            
+           
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               <div className="p-4 bg-white rounded-lg border border-green-200">
                 <h5 className="font-medium text-green-800 mb-1">Live Features</h5>
@@ -638,7 +640,7 @@ export default function Home() {
                 <p className="text-sm text-purple-700">All data structures prepared</p>
               </div>
             </div>
-            
+           
             <div className="p-4 bg-white rounded-lg border border-amber-200">
               <p className="text-sm text-amber-800">
                 <strong>Next Steps:</strong> Ready for database integration following the comprehensive 7-phase plan in{' '}
@@ -669,9 +671,6 @@ export default function Home() {
       </section>
       </div>
     </>
-=======
-
-
-
   );
 }
+ 

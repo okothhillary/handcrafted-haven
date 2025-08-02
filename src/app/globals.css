@@ -1,6 +1,18 @@
 @import 'remixicon/fonts/remixicon.css';
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 @import "tailwindcss";
+
+/* Ensure Remixicon fonts load properly and prevent FOUC */
+[class*="ri-"] {
+  font-family: 'remixicon' !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  text-rendering: auto;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 :root {
   --background: #ffffff;

@@ -15,9 +15,13 @@ export default function CartPage() {
   const { state: authState } = useAuth();
 
   const handleCheckout = () => {
-    // TODO: Add authentication check when user management is implemented
-    // For now, allow guest checkout
-    router.push('/checkout');
+    // Check if user is authenticated for better checkout experience
+    if (authState.isAuthenticated) {
+      router.push('/checkout');
+    } else {
+      // For guest users, still allow checkout but could redirect to login first
+      router.push('/checkout');
+    }
   };
 
   const handleQuantityChange = (itemId: number, newQuantity: number) => {
@@ -94,7 +98,11 @@ export default function CartPage() {
                     <div className="flex items-center space-x-3">
                       <button
                         onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                        className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                        className={`w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center transition-colors ${
+                          item.quantity <= 1 
+                            ? 'opacity-50 cursor-not-allowed bg-gray-100' 
+                            : 'hover:bg-gray-50 cursor-pointer'
+                        }`}
                         disabled={item.quantity <= 1}
                       >
                         <i className="ri-subtract-line text-sm"></i>
@@ -104,7 +112,7 @@ export default function CartPage() {
                       </span>
                       <button
                         onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                        className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors"
+                        className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors cursor-pointer"
                       >
                         <i className="ri-add-line text-sm"></i>
                       </button>
@@ -150,7 +158,7 @@ export default function CartPage() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
-                  <span className="font-semibold">FREE</span>
+                  <span className="font-bold text-gray-600">FREE</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Tax</span>
