@@ -7,13 +7,28 @@ export default async function handler(
 ) {
   try {
     const connection = await connectDB();
+    
+    if (!connection) {
+      return res.status(200).json({ 
+        message: "Running in demo mode",
+        collections: [],
+        note: "Database connection is disabled for demo deployment"
+      });
+    }
+    
+    if (!connection.connection || !connection.connection.db) {
+      return res.status(500).json({ 
+        message: "Database connection failed",
+        error: "No database connection available"
+      });
+    }
+    
     const db = connection.connection.db;
-
     const collections = await db.listCollections().toArray();
 
     res.status(200).json({
       message: "Connected successfully",
-      collections: collections.map((col: any) => col.name),
+      collections: collections.map((col: { name: string }) => col.name),
     });
   } catch (error) {
     res.status(500).json({ message: "Test endpoint failed", error });

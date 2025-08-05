@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Modal from '../ui/Modal';
 import Button from '../ui/Button';
 import { useAuth } from '../../contexts/AuthContext';
@@ -12,34 +13,39 @@ interface LoginModalProps {
 }
 
 export default function LoginModal({ isOpen, onClose, onSwitchToRegister }: LoginModalProps) {
-  const { login, state, clearError } = useAuth();
+  const { login, state } = useAuth();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await login(formData.email, formData.password);
-    if (!state.error) {
+    setError('');
+    
+    try {
+      await login(formData.email, formData.password);
       onClose();
       setFormData({ email: '', password: '' });
+      router.refresh(); // Refresh to update UI
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Login failed');
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    if (state.error) {
-      clearError();
-    }
+    if (error) setError('');
   };
 
   const handleClose = () => {
     onClose();
     setFormData({ email: '', password: '' });
-    clearError();
+    setError('');
   };
 
   const handleDemoLogin = () => {
@@ -73,11 +79,11 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister }: Logi
         </div>
 
         {/* Error Message */}
-        {state.error && (
+        {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
             <div className="flex items-center">
               <i className="ri-error-warning-line text-red-600 mr-2"></i>
-              <p className="text-sm text-red-800">{state.error}</p>
+              <p className="text-sm text-red-800">{error}</p>
             </div>
           </div>
         )}
@@ -160,7 +166,7 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister }: Logi
         {/* Switch to Register */}
         <div className="text-center pt-4 border-t border-gray-200">
           <p className="text-sm text-gray-600">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <button
               type="button"
               onClick={onSwitchToRegister}

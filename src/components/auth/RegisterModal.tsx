@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Modal from '../ui/Modal';
 import Button from '../ui/Button';
 import { useAuth } from '../../contexts/AuthContext';
@@ -12,7 +13,8 @@ interface RegisterModalProps {
 }
 
 export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: RegisterModalProps) {
-  const { register, state, clearError } = useAuth();
+  const { register, state } = useAuth();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,41 +24,46 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: Regi
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     
     // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
       return;
     }
     
     // Validate terms acceptance
     if (!acceptedTerms) {
+      setError('Please accept the terms and conditions');
       return;
     }
     
-    await register(formData.email, formData.password, formData.name);
-    if (!state.error) {
+    try {
+      await register(formData.email, formData.password, formData.name);
       onClose();
       setFormData({ name: '', email: '', password: '', confirmPassword: '' });
       setAcceptedTerms(false);
+      router.refresh(); // Refresh to update UI
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Registration failed');
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    if (state.error) {
-      clearError();
-    }
+    if (error) setError('');
   };
 
   const handleClose = () => {
     onClose();
     setFormData({ name: '', email: '', password: '', confirmPassword: '' });
     setAcceptedTerms(false);
-    clearError();
+    setError('');
   };
 
   const passwordsMatch = formData.password === formData.confirmPassword || formData.confirmPassword === '';
@@ -67,11 +74,11 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: Regi
     <Modal isOpen={isOpen} onClose={handleClose} title="Create Account">
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Error Message */}
-        {state.error && (
+        {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
             <div className="flex items-center">
               <i className="ri-error-warning-line text-red-600 mr-2"></i>
-              <p className="text-sm text-red-800">{state.error}</p>
+              <p className="text-sm text-red-800">{error}</p>
             </div>
           </div>
         )}
@@ -128,7 +135,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: Regi
               disabled={state.isLoading}
               className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent disabled:bg-gray-50 disabled:cursor-not-allowed"
               placeholder="Create a password"
-              minLength={8}
+              minLength={6}
             />
             <button
               type="button"
@@ -139,7 +146,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: Regi
               <i className={showPassword ? 'ri-eye-off-line' : 'ri-eye-line'}></i>
             </button>
           </div>
-          <p className="text-xs text-gray-500 mt-1">Password must be at least 8 characters long</p>
+          <p className="text-xs text-gray-500 mt-1">Password must be at least 6 characters long</p>
         </div>
 
         {/* Confirm Password Field */}

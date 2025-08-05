@@ -4,22 +4,22 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
-interface AuthGuardProps {
+interface ProtectedRouteProps {
   children: React.ReactNode;
   redirectTo?: string;
   requiredRole?: string;
 }
 
-export default function AuthGuard({ 
+export default function ProtectedRoute({ 
   children, 
   redirectTo = '/auth/signin',
   requiredRole 
-}: AuthGuardProps) {
+}: ProtectedRouteProps) {
   const { data: session, status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
-    if (status === 'loading') return;
+    if (status === 'loading') return; // Still loading
 
     if (!session) {
       router.push(redirectTo);
@@ -30,7 +30,7 @@ export default function AuthGuard({
     if (requiredRole && session.user?.role !== requiredRole) {
       // Allow admin to access all roles
       if (session.user?.role !== 'admin') {
-        router.push('/');
+        router.push('/unauthorized');
         return;
       }
     }

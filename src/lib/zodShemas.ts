@@ -7,7 +7,7 @@ export const loginSchema = z.object({
 
 export const signupSchema = loginSchema.extend({
   name: z.string().min(2),
-  role: z.enum(['buyer', 'seller']),
+  role: z.enum(['user', 'seller', 'admin']).optional().default('user'),
 });
 
 export const createReviewSchema = z.object({

@@ -6,11 +6,12 @@ import PageLayout from '@/components/layout/PageLayout';
 import { BreadcrumbItem } from '@/components/ui/Breadcrumb';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
-import AuthGuard from '@/components/auth/AuthGuard';
-import { useUser } from '@/contexts/AuthContext';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
+import { useSession } from 'next-auth/react';
 
 export default function AccountPage() {
-  const user = useUser();
+  const { data: session } = useSession();
+  const user = session?.user;
 
   const breadcrumbs: BreadcrumbItem[] = [
     { label: 'Account Dashboard', isCurrentPage: true }
@@ -75,7 +76,7 @@ export default function AccountPage() {
   ];
 
   return (
-    <AuthGuard>
+    <ProtectedRoute>
       <PageLayout 
         title="Account Dashboard"
         breadcrumbs={breadcrumbs}
@@ -85,10 +86,11 @@ export default function AccountPage() {
           {/* Welcome Section */}
           <Card className="p-6">
             <div className="flex items-center space-x-4">
-              {user?.avatar ? (
+              {user?.image ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={user.avatar}
-                  alt={user.name}
+                  src={user.image}
+                  alt={user?.name || 'User'}
                   className="h-16 w-16 rounded-full object-cover"
                 />
               ) : (
@@ -101,13 +103,7 @@ export default function AccountPage() {
                   Welcome back, {user?.name}!
                 </h2>
                 <p className="text-gray-600">
-                  Member since {user?.joinedAt ? 
-                    new Date(user.joinedAt).toLocaleDateString('en-US', { 
-                      year: 'numeric', 
-                      month: 'long', 
-                      day: 'numeric' 
-                    }) : 'Recently'
-                  }
+                  Role: {user?.role || 'user'} • Email: {user?.email}
                 </p>
               </div>
             </div>
@@ -201,6 +197,6 @@ export default function AccountPage() {
           </Card>
         </div>
       </PageLayout>
-    </AuthGuard>
+    </ProtectedRoute>
   );
 }

@@ -9,7 +9,15 @@
     "build:deploy": "SKIP_LINT=true next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "ts-node --project tsconfig.seed.json src/scripts/seed.ts"
+    "seed": "ts-node --project tsconfig.seed.json src/scripts/seed.ts",
+    "db:seed": "tsx src/lib/database/seed.ts",
+    "db:seed:dev": "cross-env NODE_ENV=development tsx src/lib/database/seed.ts",
+    "db:migrate": "tsx src/scripts/migrate.ts",
+    "db:health": "tsx src/scripts/health-check.ts",
+    "db:stats": "tsx src/scripts/stats.ts",
+    "db:cleanup": "tsx src/scripts/cleanup.ts",
+    "db:optimize": "tsx src/scripts/optimize.ts",
+    "db:backup": "tsx src/scripts/backup.ts"
   },
   "dependencies": {
     "@react-google-maps/api": "^2.20.7",
@@ -46,6 +54,7 @@
     "stylelint": "^16.22.0",
     "stylelint-config-standard": "^38.0.0",
     "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
     "typescript": "^5.8.3",
     "url-loader": "^4.1.1"
   }
