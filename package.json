@@ -6,24 +6,33 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "build:deploy": "SKIP_LINT=true next build",
     "start": "next start",
     "lint": "next lint",
     "seed": "ts-node --project tsconfig.seed.json src/scripts/seed.ts"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.20.7",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.2",
+    "critters": "^0.0.23",
+    "cross-env": "^10.0.0",
     "dotenv": "^17.2.0",
     "mongodb": "^6.18.0",
     "mongoose": "^8.16.4",
     "next": "15.4.1",
     "next-auth": "^4.24.11",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "zod": "^4.0.10"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@svgr/core": "^8.1.0",
+    "@svgr/webpack": "^8.1.0",
+    "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/postcss": "^4",
+    "@tailwindcss/typography": "^0.5.16",
     "@types/bcryptjs": "^3.0.0",
     "@types/mongodb": "^4.0.7",
     "@types/node": "^20.19.9",
@@ -31,8 +40,11 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.4.1",
-    "tailwindcss": "^4",
+    "file-loader": "^6.2.0",
+    "stylelint": "^16.22.0",
+    "stylelint-config-standard": "^38.0.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "url-loader": "^4.1.1"
   }
 }
