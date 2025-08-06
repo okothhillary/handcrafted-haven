@@ -1,6 +1,5 @@
 import { connectDB } from "@/utils/connectDB";
 import { User } from "@/models/user";
-import { hashPassword } from "@/lib/bcrypt";
 
 export async function POST(req: Request) {
   try {
@@ -15,14 +14,11 @@ export async function POST(req: Request) {
       });
     }
 
-    const hashedPassword = await hashPassword(password);
     const user = await User.create({
       name,
       email,
-      password: hashedPassword,
+      password,
       role: role || "user",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
     });
 
     return new Response(JSON.stringify({ message: "User created successfully", user }), {

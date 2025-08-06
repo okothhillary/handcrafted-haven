@@ -44,13 +44,6 @@ export default function SignInPage() {
     if (error) setError('');
   };
 
-  const handleDemoLogin = () => {
-    setFormData({
-      email: 'demo@example.com',
-      password: 'password123',
-    });
-  };
-
   return (
     <PageLayout
       title="Sign In to Your Account"
@@ -62,26 +55,6 @@ export default function SignInPage() {
             <div className="text-center mb-8">
               <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h1>
               <p className="text-gray-600">Sign in to access your account</p>
-            </div>
-
-            {/* Demo Account Notice */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-              <div className="flex items-start">
-                <i className="ri-information-line text-blue-600 mt-0.5 mr-2"></i>
-                <div>
-                  <p className="text-sm text-blue-800 font-medium">Demo Account Available</p>
-                  <p className="text-xs text-blue-600 mt-1">
-                    Try our demo account with email: demo@example.com, password: password123
-                  </p>
-                  <button
-                    type="button"
-                    onClick={handleDemoLogin}
-                    className="text-xs text-blue-600 underline hover:text-blue-800 mt-1"
-                  >
-                    Fill demo credentials
-                  </button>
-                </div>
-              </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">

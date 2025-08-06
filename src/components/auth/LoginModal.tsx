@@ -48,35 +48,9 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister }: Logi
     setError('');
   };
 
-  const handleDemoLogin = () => {
-    setFormData({
-      email: 'demo@example.com',
-      password: 'password123',
-    });
-  };
-
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title="Welcome Back">
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Demo Account Notice */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div className="flex items-start">
-            <i className="ri-information-line text-blue-600 mt-0.5 mr-2"></i>
-            <div>
-              <p className="text-sm text-blue-800 font-medium">Demo Account Available</p>
-              <p className="text-xs text-blue-600 mt-1">
-                Try our demo account with email: demo@example.com, password: password123
-              </p>
-              <button
-                type="button"
-                onClick={handleDemoLogin}
-                className="text-xs text-blue-600 underline hover:text-blue-800 mt-1"
-              >
-                Fill demo credentials
-              </button>
-            </div>
-          </div>
-        </div>
 
         {/* Error Message */}
         {error && (

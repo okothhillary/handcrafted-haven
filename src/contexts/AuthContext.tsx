@@ -24,7 +24,7 @@ export interface AuthState {
 const AuthContext = createContext<{
   state: AuthState;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, name: string) => Promise<void>;
+  register: (email: string, password: string, name: string, role?: string) => Promise<void>;
   logout: () => void;
   clearError: () => void;
 } | null>(null);
@@ -66,7 +66,7 @@ function AuthProviderInner({ children }: AuthProviderProps) {
     }
   };
 
-  const register = async (email: string, password: string, name: string) => {
+  const register = async (email: string, password: string, name: string, role: string = 'user') => {
     try {
       const response = await fetch('/api/signup', {
         method: 'POST',
@@ -77,7 +77,7 @@ function AuthProviderInner({ children }: AuthProviderProps) {
           email,
           password,
           name,
-          role: 'user',
+          role,
         }),
       });
 

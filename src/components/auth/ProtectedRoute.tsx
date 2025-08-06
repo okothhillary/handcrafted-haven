@@ -7,13 +7,15 @@ import { useSession } from 'next-auth/react';
 interface ProtectedRouteProps {
   children: React.ReactNode;
   redirectTo?: string;
-  requiredRole?: string;
+  requiredRole?: string | string[];
+  allowAdminAccess?: boolean;
 }
 
 export default function ProtectedRoute({ 
   children, 
   redirectTo = '/auth/signin',
-  requiredRole 
+  requiredRole,
+  allowAdminAccess = true
 }: ProtectedRouteProps) {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -27,14 +29,22 @@ export default function ProtectedRoute({
     }
 
     // Check role if required
-    if (requiredRole && session.user?.role !== requiredRole) {
-      // Allow admin to access all roles
-      if (session.user?.role !== 'admin') {
+    if (requiredRole) {
+      const userRole = session.user?.role;
+      const requiredRoles = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
+      
+      // Check if user has required role
+      const hasRequiredRole = requiredRoles.includes(userRole || '');
+      
+      // Allow admin access unless explicitly disabled
+      const isAdminWithAccess = allowAdminAccess && userRole === 'admin';
+      
+      if (!hasRequiredRole && !isAdminWithAccess) {
         router.push('/unauthorized');
         return;
       }
     }
-  }, [session, status, router, redirectTo, requiredRole]);
+  }, [session, status, router, redirectTo, requiredRole, allowAdminAccess]);
 
   // Show loading while checking authentication
   if (status === 'loading') {

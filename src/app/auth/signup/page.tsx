@@ -18,6 +18,7 @@ export default function SignUpPage() {
     email: '',
     password: '',
     confirmPassword: '',
+    role: 'user',
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -45,14 +46,14 @@ export default function SignUpPage() {
     }
     
     try {
-      await register(formData.email, formData.password, formData.name);
+      await register(formData.email, formData.password, formData.name, formData.role);
       router.push('/account');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Registration failed');
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     if (error) setError('');
@@ -60,7 +61,7 @@ export default function SignUpPage() {
 
   const passwordsMatch = formData.password === formData.confirmPassword || formData.confirmPassword === '';
   const isFormValid = formData.name && formData.email && formData.password && 
-                     formData.confirmPassword && passwordsMatch && acceptedTerms;
+                     formData.confirmPassword && passwordsMatch && acceptedTerms && formData.role;
 
   return (
     <PageLayout
@@ -120,6 +121,27 @@ export default function SignUpPage() {
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent disabled:bg-gray-50 disabled:cursor-not-allowed"
                   placeholder="Enter your email"
                 />
+              </div>
+
+              {/* Role Selection Field */}
+              <div>
+                <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-2">
+                  Account Type
+                </label>
+                <select
+                  id="role"
+                  name="role"
+                  value={formData.role}
+                  onChange={handleInputChange}
+                  disabled={state.isLoading}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent disabled:bg-gray-50 disabled:cursor-not-allowed"
+                >
+                  <option value="user">Customer - I want to buy handcrafted items</option>
+                  <option value="seller">Seller - I want to sell my handcrafted items</option>
+                </select>
+                <p className="text-xs text-gray-500 mt-1">
+                  You can change your account type later in your profile settings
+                </p>
               </div>
 
               {/* Password Field */}

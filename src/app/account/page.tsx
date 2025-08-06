@@ -1,6 +1,7 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import PageLayout from '@/components/layout/PageLayout';
 import { BreadcrumbItem } from '@/components/ui/Breadcrumb';
@@ -10,8 +11,43 @@ import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { useSession } from 'next-auth/react';
 
 export default function AccountPage() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const user = session?.user;
+
+  // Redirect based on user role
+  useEffect(() => {
+    if (status === 'loading') return; // Still loading
+
+    if (session && user?.role) {
+      switch (user.role) {
+        case 'admin':
+          router.push('/admin/dashboard');
+          return;
+        case 'seller':
+          router.push('/artisan/profile');
+          return;
+        case 'user':
+        default:
+          // Stay on this page for regular users
+          break;
+      }
+    }
+  }, [session, user?.role, router, status]);
+
+  // Show loading while checking role
+  if (status === 'loading' || (session && (user?.role === 'admin' || user?.role === 'seller'))) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="max-w-md w-full space-y-4 p-8">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto mb-4"></div>
+            <p className="text-gray-600">Redirecting to your dashboard...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const breadcrumbs: BreadcrumbItem[] = [
     { label: 'Account Dashboard', isCurrentPage: true }
