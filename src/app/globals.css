@@ -44,7 +44,26 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Improve font rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Font loading optimization */
+@supports (font-display: swap) {
+  @font-face {
+    font-family: 'GeistSans-fallback';
+    src: local('system-ui'), local('-apple-system'), local('BlinkMacSystemFont');
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'Pacifico-fallback';
+    src: local('cursive'), local('fantasy');
+    font-display: swap;
+  }
 }
 
 /* Custom component styles */
@@ -104,7 +123,8 @@ body {
 
 /* Typography classes */
 .text-brand {
-  font-family: var(--font-pacifico), cursive;
+  font-family: var(--font-pacifico), 'Pacifico-fallback', cursive, fantasy;
+  font-display: swap;
 }
 
 /* Custom animations */
