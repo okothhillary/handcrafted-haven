@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import PageLayout from '@/components/layout/PageLayout';
@@ -9,11 +9,65 @@ import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import { useSession } from 'next-auth/react';
+import { useWishlist } from '@/contexts/WishlistContext';
 
 export default function AccountPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const user = session?.user;
+  const { getWishlistCount } = useWishlist();
+  const [userStats, setUserStats] = useState({
+    totalOrders: 0,
+    wishlistItems: 0,
+    reviewCount: 0
+  });
+  const [loading, setLoading] = useState(true);
+
+  // Fetch user statistics
+  useEffect(() => {
+    const fetchUserStats = async () => {
+      if (session?.user?.email) {
+        try {
+          const response = await fetch(`/api/users/stats?email=${encodeURIComponent(session.user.email)}`);
+          if (response.ok) {
+            const stats = await response.json();
+            // Combine API stats with local wishlist count
+            setUserStats({
+              ...stats,
+              wishlistItems: getWishlistCount()
+            });
+          }
+        } catch (error) {
+          console.error('Failed to fetch user stats:', error);
+          // If API fails, at least show wishlist count
+          setUserStats(prev => ({
+            ...prev,
+            wishlistItems: getWishlistCount()
+          }));
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        // If no session, just get wishlist count
+        setUserStats(prev => ({
+          ...prev,
+          wishlistItems: getWishlistCount()
+        }));
+        setLoading(false);
+      }
+    };
+
+    if (session?.user?.email) {
+      fetchUserStats();
+    } else {
+      // Update wishlist count even if not logged in
+      setUserStats(prev => ({
+        ...prev,
+        wishlistItems: getWishlistCount()
+      }));
+      setLoading(false);
+    }
+  }, [session?.user?.email, getWishlistCount]);
 
   // Redirect based on user role
   useEffect(() => {
@@ -174,15 +228,21 @@ export default function AccountPage() {
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Account Overview</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Card className="p-6 text-center">
-                  <div className="text-3xl font-bold text-primary mb-2">12</div>
+                  <div className="text-3xl font-bold text-primary mb-2">
+                    {loading ? '-' : userStats.totalOrders}
+                  </div>
                   <p className="text-sm text-gray-600">Total Orders</p>
                 </Card>
                 <Card className="p-6 text-center">
-                  <div className="text-3xl font-bold text-red-600 mb-2">8</div>
+                  <div className="text-3xl font-bold text-red-600 mb-2">
+                    {loading ? '-' : userStats.wishlistItems}
+                  </div>
                   <p className="text-sm text-gray-600">Wishlist Items</p>
                 </Card>
                 <Card className="p-6 text-center">
-                  <div className="text-3xl font-bold text-green-600 mb-2">24</div>
+                  <div className="text-3xl font-bold text-green-600 mb-2">
+                    {loading ? '-' : userStats.reviewCount}
+                  </div>
                   <p className="text-sm text-gray-600">Items Reviewed</p>
                 </Card>
               </div>
