@@ -17,7 +17,9 @@
     "db:stats": "tsx src/scripts/stats.ts",
     "db:cleanup": "tsx src/scripts/cleanup.ts",
     "db:optimize": "tsx src/scripts/optimize.ts",
-    "db:backup": "tsx src/scripts/backup.ts"
+    "db:backup": "tsx src/scripts/backup.ts",
+    "migrate:products": "tsx scripts/migrate-products.ts",
+    "migrate:products:debug": "cross-env NODE_ENV=development tsx scripts/migrate-products.ts"
   },
   "dependencies": {
     "@react-google-maps/api": "^2.20.7",

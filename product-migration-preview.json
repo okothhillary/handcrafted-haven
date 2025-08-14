@@ -1,0 +1,86 @@
+[
+  {
+    "staticId": 1,
+    "mongoId": "689d629c20aa3f5aa36cf2ce",
+    "name": "Handwoven Ceramic Bowl",
+    "category": "pottery",
+    "price": 45
+  },
+  {
+    "staticId": 2,
+    "mongoId": "689d629c20aa3f5aa36cf2cf",
+    "name": "Macrame Wall Hanging",
+    "category": "textiles",
+    "price": 78
+  },
+  {
+    "staticId": 3,
+    "mongoId": "689d629c20aa3f5aa36cf2d0",
+    "name": "Wooden Cutting Board",
+    "category": "woodwork",
+    "price": 35
+  },
+  {
+    "staticId": 4,
+    "mongoId": "689d629c20aa3f5aa36cf2d1",
+    "name": "Silver Wire Wrapped Pendant",
+    "category": "jewelry",
+    "price": 52
+  },
+  {
+    "staticId": 5,
+    "mongoId": "689d629c20aa3f5aa36cf2d2",
+    "name": "Glass Art Vase",
+    "category": "glasswork",
+    "price": 120
+  },
+  {
+    "staticId": 6,
+    "mongoId": "689d629c20aa3f5aa36cf2d3",
+    "name": "Knitted Wool Scarf",
+    "category": "textiles",
+    "price": 55
+  },
+  {
+    "staticId": 7,
+    "mongoId": "689d629c20aa3f5aa36cf2d4",
+    "name": "Woven Cotton Throw Blanket",
+    "category": "textiles",
+    "price": 125
+  },
+  {
+    "staticId": 8,
+    "mongoId": "689d629c20aa3f5aa36cf2d5",
+    "name": "Carved Wooden Sculpture",
+    "category": "woodwork",
+    "price": 145
+  },
+  {
+    "staticId": 9,
+    "mongoId": "689d629c20aa3f5aa36cf2d6",
+    "name": "Handmade Gold Ring",
+    "category": "jewelry",
+    "price": 95
+  },
+  {
+    "staticId": 10,
+    "mongoId": "689d629c20aa3f5aa36cf2d7",
+    "name": "Ceramic Tea Set",
+    "category": "pottery",
+    "price": 180
+  },
+  {
+    "staticId": 11,
+    "mongoId": "689d629c20aa3f5aa36cf2d8",
+    "name": "Embroidered Silk Scarf",
+    "category": "textiles",
+    "price": 67
+  },
+  {
+    "staticId": 12,
+    "mongoId": "689d629c20aa3f5aa36cf2d9",
+    "name": "Hand-forged Iron Candle Holder",
+    "category": "metalwork",
+    "price": 58
+  }
+]
