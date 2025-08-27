@@ -4,7 +4,7 @@ A modern e-commerce platform showcasing handcrafted artisan products from around
 
 ## 🌟 Live Demo
 
-🚀 **Production Site**: [handcrafted-haven-git-individual-olwal-olwalgeorges-projects.vercel.app](https://handcrafted-haven-git-individual-olwal-olwalgeorges-projects.vercel.app)
+🚀 **Production Site**: https://handcrafted-haven-mo4p067i5-georges-projects-81ad07f1.vercel.app/
 
 ## 📊 Project Status
 
