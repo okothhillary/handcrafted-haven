@@ -1,12 +1,12 @@
-# 🎨 Handcrafted Haven
+# Handcrafted Haven
 
 A modern e-commerce platform showcasing handcrafted artisan products from around the world. Built with Next.js 15, React 19, and TypeScript for a premium shopping experience.
 
-## 🌟 Live Demo
+## Live Demo
 
 🚀 **Production Site**: https://handcrafted-haven-mo4p067i5-georges-projects-81ad07f1.vercel.app/
 
-## 📊 Project Status
+## Project Status
 
 **Current Status**: ✅ **Production Ready** (95% Complete)  
 **Last Updated**: July 30, 2025  
